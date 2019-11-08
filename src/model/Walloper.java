@@ -1,11 +1,12 @@
 package model;
 
-public class Walloper extends Warrior{
+import commons.IContants;
+
+public class Walloper extends Warrior implements IContants{
 	
 	
-	public Walloper(int pAttack, int pEnergy, float pFrequency) {
-		this.attack = pAttack;
-		this.energy = pEnergy;
-		this.delay = pFrequency;
+	public Walloper() {
+		this.attack = WALLOPER_ATTACK;
+		this.delay = WALLOPER_ATTACK_DELAY;
 	}
 }

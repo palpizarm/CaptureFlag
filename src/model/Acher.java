@@ -1,11 +1,11 @@
 package model;
 
-public class Acher extends Warrior {
+import commons.IContants;
+
+public class Acher extends Warrior  implements IContants{
 	
-	
-	public Acher(int pAttack, int pEnergy, float pFrequency) {
-		this.attack = pAttack;
-		this.energy = pEnergy;
-		this.delay = pFrequency;
+	public Acher() {
+		this.attack = ARCHER_ATTACK;
+		this.delay = ARCHER_ATTACK_DELAY;
 	}
 }

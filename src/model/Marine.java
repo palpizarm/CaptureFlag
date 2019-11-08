@@ -1,11 +1,12 @@
 package model;
 
-public class Marine extends Warrior{
+import commons.IContants;
+
+public class Marine extends Warrior implements IContants{
 	
 	
-	public Marine(int pAttack, int pEnergy, float pFrequency) {
-		this.attack = pAttack;
-		this.energy = pEnergy;
-		this.delay = pFrequency;
+	public Marine() {
+		this.attack = MARINE_ATTACK;
+		this.delay = MARINE_ATTACK_DELAY;
 	}
 }
