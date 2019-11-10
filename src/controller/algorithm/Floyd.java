@@ -48,7 +48,8 @@ public class Floyd <T>{
 		for (int k = 0; k < numVertices; k++)
 			for (int i = 0; i < numVertices; i++)
 				for (int j = 0; j < numVertices; j++)
-					if ((weight.get(i).get(k) + weight.get(k).get(j)) < weight.get(i).get(j)) // nuevo mínimo
+					// minimum number
+					if ((weight.get(i).get(k) + weight.get(k).get(j)) < weight.get(i).get(j)) 
 					{
 						weight.get(i).set(j, weight.get(i).get(k) + weight.get(i).get(j));
 						tours.get(i).set(k, nodes.get(k));
