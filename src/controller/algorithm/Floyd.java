@@ -18,32 +18,32 @@ public class Floyd <T>{
 		nodes = pGraph.getNodes();
 		numVertices = nodes.size();
 		//create the weight list and the tour list
-		for (int vertice = 0; vertice < numVertices; vertice++) {
+		for (int vertex = 0; vertex < numVertices; vertex++) {
 			tours.add(new LinkedList<Node<T>>());
 			weight.add(new LinkedList<Integer>());			
-			ArrayList<Node<T>> nodesDestination = nodes.get(vertice).getNodesDestination();
-			ArrayList<Arc<T>> arcs = nodes.get(vertice).getArcs();
+			ArrayList<Node<T>> nodesDestination = nodes.get(vertex).getNodesDestination();
+			ArrayList<Arc<T>> arcs = nodes.get(vertex).getArcs();
 			for(int subIndex = 0; subIndex < numVertices; subIndex++) {
-				if(nodesDestination.contains(nodes.get(vertice))) {
+				if(nodesDestination.contains(nodes.get(vertex))) {
 					for(Arc<T>  arc: arcs ) {
-						if (arc.getDestination().equals(nodes.get(vertice))) {
-							weight.get(vertice).add(arc.getWeight());							
+						if (arc.getDestination().equals(nodes.get(vertex))) {
+							weight.get(vertex).add(arc.getWeight());							
 						}
 					}					
 				}else {
-					weight.get(vertice).add(Integer.MAX_VALUE);
+					weight.get(vertex).add(Integer.MAX_VALUE);
 				}
-				tours.get(vertice).add(nodes.get(subIndex));
+				tours.get(vertex).add(nodes.get(subIndex));
 			}
-			weight.get(vertice).set(vertice, 0);
+			weight.get(vertex).set(vertex, 0);
 		}		
 	}
 	public void calcFloyd()
 	{
 		
 		// Minimum path of a vertex to itself: 0
-		for (int i = 0; i < numVertices; i++)
-			weight.get(i).set(i , 0 );
+		for (int index = 0; index < numVertices; index++)
+			weight.get(index).set(index , 0 );
 		//Perform due calculations and reorganize lists
 		for (int k = 0; k < numVertices; k++)
 			for (int i = 0; i < numVertices; i++)
