@@ -2,7 +2,7 @@ package model;
 
 import commons.IContants;
 
-public abstract class Warrior  implements IContants{
+public abstract class Warrior  implements IPersonage, IContants{
 	protected int attack;
 	protected int energy;
 	protected float delay;
