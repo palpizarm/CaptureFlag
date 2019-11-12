@@ -36,7 +36,7 @@ public class Node<T> {
 	}
 	
 	public ArrayList<Arc<T>> getArcs() {
-		return new ArrayList<Arc<T>>(arcs);
+		return arcs;
 	}
 	
 	public void addArc(Node<T> pNode, int pWeight) {
