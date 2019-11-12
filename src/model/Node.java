@@ -19,7 +19,7 @@ public class Node<T> {
 		return this.value; 
 	}
 
-	public boolean isVisited() {
+	public boolean getVisited() {
 		return visited;
 	}
 
@@ -35,9 +35,20 @@ public class Node<T> {
 		return nodesDestination;
 	}
 	
-	public void addArc(Node<T> pNode) {
+	public ArrayList<Arc<T>> getArcs() {
+		return new ArrayList<Arc<T>>(arcs);
+	}
+	
+	public void addArc(Node<T> pNode, int pWeight) {
 		if (pNode != this) {
-			arcs.add(new Arc<T>(this, pNode, 1));
+			arcs.add(new Arc<T>(this, pNode, pWeight));
 		}
+	}
+	
+	public Arc<T> getArc(Node<T> pDestination) {
+		for (Arc<T> arc : this.arcs)
+			if (arc.getDestination() == pDestination)
+				return arc;
+		return null;
 	}
 }

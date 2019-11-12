@@ -1,6 +1,6 @@
 package model;
 
-public class Arc<T> {
+public class Arc<T> implements Comparable<Arc<T>>{
 	private Node<T> origin;
 	private Node<T> destination;
 	private int weight;
@@ -27,11 +27,16 @@ public class Arc<T> {
 		this.destination = destination;
 	}
 
-	public int getPeso() {
+	public int getWeight() {
 		return weight;
 	}
 
-	public void setPeso(int pWeight) {
+	public void setWeight(int pWeight) {
 		this.weight = pWeight;
+	}
+
+	@Override
+	public int compareTo(Arc<T> pArc) {
+		return Integer.compare(this.weight,pArc.getWeight());
 	}	
 }
