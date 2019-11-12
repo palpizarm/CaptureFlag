@@ -28,7 +28,7 @@ public class Dijkstra<T> {
 	}
 	
 	/**
-	 * Funciton to get minimun vertex no visited
+	 * Function to get minimum vertex no visited
 	 */
 	private Node<T> findMinimunVertex() {
 		Node<T> minimunVertex = unvisitedVertices.iterator().next();
@@ -73,7 +73,12 @@ public class Dijkstra<T> {
 		} // end while
 	}
 	
-	public ArrayList<Node<T>> getGraphTo(Node<T> pDestination) {
+	/**
+	 * Function to get the list of path vertex
+	 * 
+	 * @param pDestination the end vertex
+	 */
+	public ArrayList<Node<T>> getPathTo(Node<T> pDestination) {
 		Stack<Node<T>> findPath = new Stack<Node<T>>();
 		ArrayList<Node<T>> path = new ArrayList<Node<T>>();
 		findPath.push(pDestination);
