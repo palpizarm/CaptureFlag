@@ -6,7 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Observable;
 
-import common.Message;
+import commons.Message;
 
 public class SocketPlayer extends Observable implements Runnable {
 	private Socket socket;

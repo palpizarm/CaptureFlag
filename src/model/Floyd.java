@@ -1,4 +1,4 @@
-package controller.algorithm;
+package model;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
