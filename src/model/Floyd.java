@@ -24,9 +24,9 @@ public class Floyd <T>{
 			ArrayList<Node<T>> nodesDestination = nodes.get(vertex).getNodesDestination();
 			ArrayList<Arc<T>> arcs = nodes.get(vertex).getArcs();
 			for(int subIndex = 0; subIndex < numVertices; subIndex++) {
-				if(nodesDestination.contains(nodes.get(vertex))) {
+				if(nodesDestination.contains(nodes.get(subIndex))) {
 					for(Arc<T>  arc: arcs ) {
-						if (arc.getDestination().equals(nodes.get(vertex))) {
+						if (arc.getDestination().equals(nodes.get(subIndex))) {
 							weight.get(vertex).add(arc.getWeight());							
 						}
 					}					
