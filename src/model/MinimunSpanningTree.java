@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Moving Tree Search algorithm implementations with adjacency list
@@ -20,19 +21,20 @@ public class MinimunSpanningTree<T> {
 		aclyclicGraph = new Graph<T>();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void findMinimunSpanningTree(Graph<T> pGraph) {
 		ArrayList<Arc<T>> arcs = pGraph.getArcs();
 		ArrayList<Node<T>> unvisitedVertex = new ArrayList<Node<T>>(pGraph.getNodes());
 		Collections.sort(arcs);
+		Iterator<Arc<T>> iterator = arcs.iterator();
 		while(!unvisitedVertex.isEmpty()) {
-			Arc<T> arc = arcs.iterator().next();
-			T origin = (T) new Node<T>(arc.getOrigin().getValue());
-			T destination = (T) new Node<T>(arc.getDestination().getValue());
-			Node<T> originVertex  = aclyclicGraph.addNode(origin);
-			Node<T> destinationVertex  = aclyclicGraph.addNode(destination);
-			aclyclicGraph.addArc(originVertex, destinationVertex, arc.getWeight());
-			aclyclicGraph.addArc(destinationVertex, originVertex, arc.getWeight());
+			Arc<T> arc = iterator.next();
+			if (unvisitedVertex.contains(arc.getOrigin())) {
+				unvisitedVertex.remove(arc.getOrigin());
+				Node<T> originVertex  = aclyclicGraph.addNode(arc.getOrigin().getValue());
+				Node<T> destinationVertex  = aclyclicGraph.addNode(arc.getDestination().getValue());
+				aclyclicGraph.addArc(originVertex, destinationVertex, arc.getWeight());
+				aclyclicGraph.addArc(destinationVertex, originVertex, arc.getWeight());
+			}
 		}
 		
 	}

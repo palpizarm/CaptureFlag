@@ -40,7 +40,6 @@ public class Floyd <T>{
 	}
 	public void calcFloyd()
 	{
-		
 		// Minimum path of a vertex to itself: 0
 		for (int index = 0; index < numVertices; index++)
 			weight.get(index).set(index , 0 );

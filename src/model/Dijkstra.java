@@ -33,7 +33,7 @@ public class Dijkstra<T> {
 	private Node<T> findMinimunVertex() {
 		Node<T> minimunVertex = unvisitedVertices.iterator().next();
 		for (Node<T> key : shorestPath.keySet()) {
-			if (!unvisitedVertices.contains(key) && shorestPath.get(key).getWeight() < shorestPath.get(minimunVertex).getWeight()) {
+			if (unvisitedVertices.contains(key) && shorestPath.get(key).getWeight() < shorestPath.get(minimunVertex).getWeight()) {
 				minimunVertex = key;
 			} // end if
 		} // end for
@@ -57,11 +57,11 @@ public class Dijkstra<T> {
 			shorestPath.get(adjacency.getDestination()).setPreviousVertex(adjacency.getOrigin());
 			shorestPath.get(adjacency.getDestination()).setWeight(adjacency.getWeight());
 		}
-		while (unvisitedVertices.size() == 1) {
+		while (unvisitedVertices.size() != 1) {
 			Node<T> minimunVertex = findMinimunVertex();
 			unvisitedVertices.remove(minimunVertex);
 			for (Node<T> vertex : unvisitedVertices) {
-				Arc<T> arcFromMinimun = vertex.getArc(vertex);
+				Arc<T> arcFromMinimun = minimunVertex.getArc(vertex);
 				if (arcFromMinimun != null) {
 					int weight = shorestPath.get(minimunVertex).getWeight() + arcFromMinimun.getWeight();
 					if (shorestPath.get(vertex).getWeight() > weight) {

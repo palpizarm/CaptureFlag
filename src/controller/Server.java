@@ -1,9 +1,9 @@
-package player;
+package controller;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Observer;
-import	player.SocketPlayer;
+import	controller.SocketPlayer;
 
 public class Server implements Runnable {
 	private boolean active;
