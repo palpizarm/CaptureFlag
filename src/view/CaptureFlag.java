@@ -32,6 +32,7 @@ public class CaptureFlag extends JFrame{
 		floydTest.getMinimumPath(vertex6, vertex1);
 
 		Stack<Node<Integer>> nodos = floydTest.getMinimumPath(vertex6, vertex5);
+		new Login().setVisible(true);
 	}
 
 }
