@@ -27,7 +27,8 @@ public class Floyd <T>{
 				if(nodesDestination.contains(nodes.get(subIndex))) {
 					for(Arc<T>  arc: arcs ) {
 						if (arc.getDestination().equals(nodes.get(subIndex))) {
-							weight.get(vertex).add(arc.getWeight());							
+							weight.get(vertex).add(arc.getWeight());	
+							break;
 						}
 					}					
 				}else {
@@ -36,23 +37,29 @@ public class Floyd <T>{
 				tours.get(vertex).add(nodes.get(subIndex));
 			}
 			weight.get(vertex).set(vertex, 0);
-		}		
+		}	
+		calcFloyd();
 	}
 	public void calcFloyd()
 	{
 		// Minimum path of a vertex to itself: 0
-		for (int index = 0; index < numVertices; index++)
-			weight.get(index).set(index , 0 );
+		//for (int index = 0; index < numVertices; index++)
+		//	weight.get(index).set(index , 0 );
 		//Perform due calculations and reorganize lists
-		for (int k = 0; k < numVertices; k++)
-			for (int i = 0; i < numVertices; i++)
-				for (int j = 0; j < numVertices; j++)
-					// minimum number
-					if ((weight.get(i).get(k) + weight.get(k).get(j)) < weight.get(i).get(j)) 
+		for (int i = 0; i < numVertices; i++)
+			weight.get(i).set(i, 0);
+		for (int k = 0; k < numVertices; k++) {
+			for (int i = 0; i < numVertices; i++) {
+				for (int j = 0; j < numVertices; j++) {
+					if ((weight.get(i).get(k) + weight.get(k).get(j)) < weight.get(i).get(j) && (weight.get(i).get(k) + weight.get(k).get(j)) >= 0) // nuevo mínimo
 					{
-						weight.get(i).set(j, weight.get(i).get(k) + weight.get(i).get(j));
-						tours.get(i).set(k, nodes.get(k));
+						int num = (weight.get(i).get(k))+(weight.get(k).get(j));
+						weight.get(i).set(j, num);
+						tours.get(i).set(j,nodes.get(k));
 					}
+				}
+			}
+		}
 	}
 }
 
