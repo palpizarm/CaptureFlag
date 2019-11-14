@@ -27,6 +27,7 @@ public class CaptureFlag extends JFrame{
 		test.addArc(vertex5, vertex6, 8);
 		test.addArc(vertex6, vertex1, 6);
 		Floyd<Integer> floydTest = new Floyd<Integer>(test);
+		floydTest.getMinimumPath(vertex6, vertex1);
 	}
 
 }

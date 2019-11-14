@@ -2,6 +2,8 @@ package commons;
 
 public interface IContants {
 	
+	public int AUX_FILES = 6;
+	
 	public int ENERGEY = 100;
 	
 	public int WALLOPER_ATTACK = 80;

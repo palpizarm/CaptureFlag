@@ -41,6 +41,7 @@ public class Floyd <T>{
 		}	
 		calcFloyd();
 	}
+	
 	public void calcFloyd()
 	{
 		// Minimum path of a vertex to itself: 0
@@ -63,13 +64,12 @@ public class Floyd <T>{
 		}
 	}
 	
-	public Stack<Node<T>> minimumPath(Node<T> pOrigin, Node<T> pDestiny) {
+	public Stack<Node<T>> getMinimumPath(Node<T> pOrigin, Node<T> pDestiny) {
 		int pathOrigin = 0;
 		int pathLastNode = 0;
 		Node<T> lastNode = pDestiny;
 		Stack<Node<T>> stackNodes = new Stack<Node<T>>();
-		//We look for addresses to have an address list reference
-		//int index = 0;
+		//Look for addresses to have an address list reference
 		for (int index = 0; index < numVertices; index++) {
 			if (tours.get(index).get(index) == pOrigin) {
 				pathOrigin = index;

@@ -8,6 +8,7 @@ import java.util.Observable;
 
 import commons.Message;
 
+@SuppressWarnings("deprecation")
 public class SocketPlayer extends Observable implements Runnable {
 	private Socket socket;
 	private DataInputStream input;

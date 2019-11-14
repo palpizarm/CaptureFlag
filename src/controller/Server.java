@@ -5,10 +5,13 @@ import java.net.Socket;
 import java.util.Observer;
 import	controller.SocketPlayer;
 
+
+@SuppressWarnings("deprecation")
 public class Server implements Runnable {
 	private boolean active;
-	private ServerSocket server;
 	private final int PORT = 4000;
+	private ServerSocket server;
+
 	private Observer connObserver;
 	
 	public Server(Observer connObserver) {
