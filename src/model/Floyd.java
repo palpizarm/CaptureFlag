@@ -75,15 +75,22 @@ public class Floyd <T>{
 				pathOrigin = index;
 			}
 		}
+		stackNodes.push(pDestiny);
+		boolean routeFound = false;
 		do {	
 			for (int index = 0; index < numVertices; index++) {
 				if (tours.get(index).get(index) == lastNode) {
 					pathLastNode = index;
 				}	
 			}					
+			
+			if (tours.get(pathOrigin).get(pathLastNode) == lastNode) {
+				routeFound = true;
+				break;
+			}
 			stackNodes.push(tours.get(pathOrigin).get(pathLastNode));
 			lastNode=tours.get(pathOrigin).get(pathLastNode);
-		}while(tours.get(pathOrigin).get(pathLastNode) != lastNode );
+		}while( !routeFound);
 		stackNodes.push(pOrigin);	
 		return stackNodes;
 	}

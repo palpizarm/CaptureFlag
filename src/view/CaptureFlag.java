@@ -1,11 +1,12 @@
 package view;
 
 
+import java.util.Stack;
+
 import javax.swing.JFrame;
 
 import model.Floyd;
 import model.Graph;
-import model.MinimunSpanningTree;
 import model.Node;
 
 
@@ -27,7 +28,10 @@ public class CaptureFlag extends JFrame{
 		test.addArc(vertex5, vertex6, 8);
 		test.addArc(vertex6, vertex1, 6);
 		Floyd<Integer> floydTest = new Floyd<Integer>(test);
+
 		floydTest.getMinimumPath(vertex6, vertex1);
+
+		Stack<Node<Integer>> nodos = floydTest.getMinimumPath(vertex6, vertex5);
 	}
 
 }
