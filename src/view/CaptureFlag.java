@@ -1,6 +1,8 @@
 package view;
 
 
+import java.util.Stack;
+
 import javax.swing.JFrame;
 
 import model.Floyd;
@@ -27,6 +29,7 @@ public class CaptureFlag extends JFrame{
 		test.addArc(vertex5, vertex6, 8);
 		test.addArc(vertex6, vertex1, 6);
 		Floyd<Integer> floydTest = new Floyd<Integer>(test);
+		Stack<Node<Integer>> nodos = floydTest.minimumPath(vertex1, vertex6);
 	}
 
 }
