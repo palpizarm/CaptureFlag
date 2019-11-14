@@ -1,0 +1,54 @@
+package controller;
+
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Observer;
+import	controller.SocketPlayer;
+
+
+@SuppressWarnings("deprecation")
+public class Server implements Runnable {
+	private boolean active;
+	private final int PORT = 4000;
+	private ServerSocket server;
+
+	private Observer connObserver;
+	
+	public Server(Observer connObserver) {
+		try 
+		{
+			this.connObserver = connObserver;
+			active = true;
+			server = new ServerSocket(PORT);
+
+			Thread hiloserver = new Thread(this);
+			hiloserver.start();
+
+		} catch (Exception ex) 
+		{
+			active = false;
+			ex.printStackTrace();
+		}
+	}
+
+	public void run() {
+		System.out.println("Listening on port "+PORT);
+		
+		while (active) 
+		{
+			try 	
+			{
+				Socket socket = server.accept();
+				SocketPlayer client = new SocketPlayer(socket);
+				client.addObserver(connObserver);
+				Thread.sleep(25);
+			}
+			catch (Exception ex)
+			{
+				active = false;
+				ex.printStackTrace();
+			}			
+		}
+		System.out.println("Closing server");
+	}
+}
