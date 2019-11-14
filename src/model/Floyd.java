@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
 
 import model.Arc;
 import model.Graph;
@@ -13,7 +14,7 @@ public class Floyd <T>{
 	private ArrayList<LinkedList<Integer>> 	weight = new ArrayList<LinkedList<Integer>>();		
 	private int numVertices;
 	
-	public Floyd(Graph<T> pGraph, Node<T> pNode)
+	public Floyd(Graph<T> pGraph)
 	{					
 		nodes = pGraph.getNodes();
 		numVertices = nodes.size();
@@ -60,6 +61,31 @@ public class Floyd <T>{
 				}
 			}
 		}
+	}
+	
+	public Stack<Node<T>> minimumPath(Node<T> pOrigin, Node<T> pDestiny) {
+		int pathOrigin = 0;
+		int pathLastNode = 0;
+		Node<T> lastNode = pDestiny;
+		Stack<Node<T>> stackNodes = new Stack<Node<T>>();
+		//We look for addresses to have an address list reference
+		//int index = 0;
+		for (int index = 0; index < numVertices; index++) {
+			if (tours.get(index).get(index) == pOrigin) {
+				pathOrigin = index;
+			}
+		}
+		do {	
+			for (int index = 0; index < numVertices; index++) {
+				if (tours.get(index).get(index) == lastNode) {
+					pathLastNode = index;
+				}	
+			}					
+			stackNodes.push(tours.get(pathOrigin).get(pathLastNode));
+			lastNode=tours.get(pathOrigin).get(pathLastNode);
+		}while(tours.get(pathOrigin).get(pathLastNode) != lastNode );
+		stackNodes.push(pOrigin);	
+		return stackNodes;
 	}
 }
 
