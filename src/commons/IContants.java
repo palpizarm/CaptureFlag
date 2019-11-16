@@ -2,7 +2,7 @@ package commons;
 
 public interface IContants {
 	
-	public int AUX_FILES = 6;
+	public int AUX_FILES = 4;
 	
 	public int ENERGEY = 100;
 	
@@ -13,4 +13,8 @@ public interface IContants {
 	public float WALLOPER_ATTACK_DELAY = (float)2;
 	public float ARCHER_ATTACK_DELAY = (float)1;
 	public float MARINE_ATTACK_DELAY =  (float)1.5;
+	
+	public final static int PASSWORD_LENGTH = 8;
+	public final static int EMAIL_LENGTH = 60;
+	
 }
