@@ -2,13 +2,15 @@ package controller;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 
 import commons.IContants;
 import model.Player;
@@ -45,6 +47,7 @@ public class BinaryFileHandler implements IContants {
 	private void multipleBalancedMix() {
 		int range = 1, countObject = 0;
 		int indexData [] = new int[M];
+		int byteRead = 0;
 		byte[][] bytesObject = null;
 		for (int fileIndex = 0; fileIndex < M; fileIndex++) {
 			auxiliarFiles[fileIndex] = new File("File" + fileIndex);
@@ -63,19 +66,17 @@ public class BinaryFileHandler implements IContants {
 								new BufferedOutputStream(new FileOutputStream(auxiliarFiles[indexData[index]])));
 					}
 				}
-				bytesObject = new byte[M2*range][bytesRangeObject];
+				bytesObject = new byte[range][bytesRangeObject];
 				for (int index = 0; index < M2; index++) {
-					for (int object = 0; object < range; object++) {
-						byte []bytes = new byte[bytesRangeObject];
-						int countBytes = ((DataInputStream)DataStream[indexData[index]]).read(bytes,bytesRangeObject*object,bytesRangeObject);
-						if(countBytes < 0)
-							bytesObject[index] = bytes;
-						else
-							break;
-					}
+					int countBytes = ((DataInputStream)DataStream[indexData[index]]).read(bytesObject[index],byteRead,bytesRangeObject);
 				}
-				range *= range;
-				
+				do {
+					Player player1 = (Player)getObject(bytesObject[0]);
+					Player palyer2 = (Player)getObject(bytesObject[1]);
+				} while();
+				/**
+				 * Buscar iterar en los tramos y para ir ordenando
+				 */
 			} while (range > countObject);
 		} catch (Exception e) {
 			System.out.println("ERROR: multiple Balanced Mix throw a error");
@@ -84,6 +85,12 @@ public class BinaryFileHandler implements IContants {
 
 	}
 	
+	
+	private Object getObject(byte[] byteArr) throws IOException, ClassNotFoundException {
+		ByteArrayInputStream bis = new ByteArrayInputStream(byteArr);
+		ObjectInput in = new ObjectInputStream(bis);
+		return in.readObject();
+	}
 	/**
 	 * 
 	 * @return the number of object in the file
