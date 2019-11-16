@@ -1,5 +1,6 @@
 package model;
 
+import java.security.AlgorithmConstraints;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -11,7 +12,7 @@ import java.util.Iterator;
  * 
  * @author pablo
  */
-public class MinimunSpanningTree<T> {
+public class MinimunSpanningTree<T> extends algorithmPath<T>{
 	
 	Graph<T> aclyclicGraph;
 	/*
@@ -21,7 +22,7 @@ public class MinimunSpanningTree<T> {
 		aclyclicGraph = new Graph<T>();
 	}
 	
-	public void findMinimunSpanningTree(Graph<T> pGraph) {
+	public void findPath(Graph<T> pGraph) {
 		ArrayList<Arc<T>> arcs = pGraph.getArcs();
 		ArrayList<Node<T>> unvisitedVertex = new ArrayList<Node<T>>(pGraph.getNodes());
 		Collections.sort(arcs);
@@ -41,6 +42,17 @@ public class MinimunSpanningTree<T> {
 	
 	public Graph<T> getGraph() {
 		return aclyclicGraph;
+	}
+
+	@Override
+	public void findPath(Graph<T> pGraph, Node<T> pOrigin) {
+		
+	}
+
+	@Override
+	public ArrayList<Node<T>> getPathTo(Node<T> pDestination) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

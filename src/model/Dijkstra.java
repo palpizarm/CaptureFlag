@@ -12,7 +12,7 @@ import java.util.Stack;
  * 
  * @author pablo
  */
-public class Dijkstra<T> {
+public class Dijkstra<T> extends algorithmPath<T>{
 
 	private ArrayList<Node<T>> unvisitedVertices;
 	private HashMap<Node<T>, D<T>> shorestPath;
@@ -44,7 +44,7 @@ public class Dijkstra<T> {
 	 * @param pGraph 
 	 * @param pOrigin
 	 */ 
-	public void findMinimunPath(Graph<T> pGraph, Node<T> pOrigin) {
+	public void findPath(Graph<T> pGraph, Node<T> pOrigin) {
 		origin = pOrigin;
 		unvisitedVertices.addAll(pGraph.getNodes());
 		for (Node<T> vertex : pGraph.getNodes()) {

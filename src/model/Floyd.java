@@ -8,7 +8,8 @@ import model.Arc;
 import model.Graph;
 import model.Node;
 
-public class Floyd <T>{
+public class Floyd <T> extends algorithmPath<T>{
+	
 	private ArrayList<LinkedList<Node<T>>> tours = new ArrayList<LinkedList<Node<T>>>();
 	private ArrayList<Node<T>> nodes = new ArrayList<Node<T>>();
 	private ArrayList<LinkedList<Integer>> 	weight = new ArrayList<LinkedList<Integer>>();		
@@ -64,7 +65,7 @@ public class Floyd <T>{
 		}
 	}
 	
-	public Stack<Node<T>> getMinimumPath(Node<T> pOrigin, Node<T> pDestiny) {
+	public Stack<Node<T>> getPathTo(Node<T> pOrigin, Node<T> pDestiny) {
 		int pathOrigin = 0;
 		int pathLastNode = 0;
 		Node<T> lastNode = pDestiny;
@@ -93,6 +94,18 @@ public class Floyd <T>{
 		}while( !routeFound);
 		stackNodes.push(pOrigin);	
 		return stackNodes;
+	}
+
+	@Override
+	public void findPath(Graph<T> pGraph, Node<T> pOrigin) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<Node<T>> getPathTo(Node<T> pDestination) {
+		
+		return null;
 	}
 }
 
