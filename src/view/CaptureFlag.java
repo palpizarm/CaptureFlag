@@ -1,38 +1,64 @@
 package view;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-import java.util.Stack;
-
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import model.Floyd;
-import model.Graph;
-import model.Node;
+import commons.IContants;
+import controller.Manager;
 
 
-public class CaptureFlag extends JFrame{
+public class CaptureFlag extends JFrame implements IContants{
 	private static final long serialVersionUID = 1L;
 
+	private Manager manger = null;
+	private BufferedImage bg_image = null;
+	private BufferedImage obstacle_image = null;
+	private BufferedImage marine_image = null;
+	private BufferedImage walloper_image = null;
+	private BufferedImage archer_image = null;
+	
+	public CaptureFlag() {
+		super("Capture Flag(Application)");
+		manger = Manager.getInstance();
+		loadImage();
+		
+		this.setSize(WIDTH_APP, HEIGHT_APP);
+		this.setLocation(X_APP, Y_APP);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
+	}
+	
+	
+	private void loadImage() {
+		try {
+			bg_image = ImageIO.read(new File("D:\\Desktop\\Estructura de Datos\\CaptureFlag(Project)\\images\\background.bmp"));
+			obstacle_image = ImageIO.read(new File("D:\\Desktop\\Estructura de Datos\\CaptureFlag(Project)\\images\\obstacle.png"));
+			archer_image = ImageIO.read(new File("D:\\Desktop\\Estructura de Datos\\CaptureFlag(Project)\\images\\archer.png"));
+			marine_image = ImageIO.read(new File("D:\\Desktop\\Estructura de Datos\\CaptureFlag(Project)\\images\\marine.png"));
+			walloper_image = ImageIO.read(new File("D:\\Desktop\\Estructura de Datos\\CaptureFlag(Project)\\images\\walloper.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setVisible(boolean pVisible) {
+		super.setVisible(pVisible);
+	}
+	
+	public void paint(Graphics g){
+		super.paint(g);
+		g.drawImage(bg_image,X_APP,Y_APP,WIDTH_APP,HEIGHT_APP,null);
+		
+	}
+	
 	public static void main(String[] args) {
-		Graph<Integer> test = new Graph<Integer>();
-		Node<Integer> vertex1 = test.addNode(1);
-		Node<Integer> vertex2 = test.addNode(2);
-		Node<Integer> vertex3 = test.addNode(3);
-		Node<Integer> vertex4 = test.addNode(4);
-		Node<Integer> vertex5 = test.addNode(5);
-		Node<Integer> vertex6 = test.addNode(6);
-		test.addArc(vertex1, vertex2, 4);
-		test.addArc(vertex2, vertex3, 4);
-		test.addArc(vertex3, vertex4, 5);
-		test.addArc(vertex4, vertex5, 2);
-		test.addArc(vertex5, vertex6, 8);
-		test.addArc(vertex6, vertex1, 6);
-		Floyd<Integer> floydTest = new Floyd<Integer>(test);
-
-		floydTest.getMinimumPath(vertex6, vertex1);
-
-		Stack<Node<Integer>> nodos = floydTest.getMinimumPath(vertex6, vertex5);
-		new Login().setVisible(true);
+		CaptureFlag application = new CaptureFlag();
+		application.setVisible(true);
 	}
 
 }

@@ -12,11 +12,10 @@ import java.util.Stack;
  * 
  * @author pablo
  */
-public class Dijkstra<T> {
+public class Dijkstra<T> extends algorithmPath<T>{
 
 	private ArrayList<Node<T>> unvisitedVertices;
 	private HashMap<Node<T>, D<T>> shorestPath;
-	private Node<T> origin;
 	
 	/**
 	 * Constructor
@@ -40,37 +39,41 @@ public class Dijkstra<T> {
 		return minimunVertex;
 	}
 	
+	@Override
 	/**
 	 * @param pGraph 
-	 * @param pOrigin
+	 * @throws Exception 
 	 */ 
-	public void findMinimunPath(Graph<T> pGraph, Node<T> pOrigin) {
-		origin = pOrigin;
-		unvisitedVertices.addAll(pGraph.getNodes());
-		for (Node<T> vertex : pGraph.getNodes()) {
-			shorestPath.put(vertex, new D<T>(Integer.MAX_VALUE));
-		}
-		shorestPath.get(origin).setPreviousVertex(origin);
-		shorestPath.get(origin).setWeight(0);
-		unvisitedVertices.remove(origin);
-		for (Arc<T> adjacency : origin.getArcs()) {
-			shorestPath.get(adjacency.getDestination()).setPreviousVertex(adjacency.getOrigin());
-			shorestPath.get(adjacency.getDestination()).setWeight(adjacency.getWeight());
-		}
-		while (unvisitedVertices.size() != 1) {
-			Node<T> minimunVertex = findMinimunVertex();
-			unvisitedVertices.remove(minimunVertex);
-			for (Node<T> vertex : unvisitedVertices) {
-				Arc<T> arcFromMinimun = minimunVertex.getArc(vertex);
-				if (arcFromMinimun != null) {
-					int weight = shorestPath.get(minimunVertex).getWeight() + arcFromMinimun.getWeight();
-					if (shorestPath.get(vertex).getWeight() > weight) {
-						shorestPath.get(vertex).setWeight(weight);
-						shorestPath.get(vertex).setPreviousVertex(minimunVertex);
+	public void findPath(Graph<T> pGraph) throws Exception {
+		if (origin == null) {
+			throw new Exception("Origin node is null");
+		} else {
+			unvisitedVertices.addAll(pGraph.getNodes());
+			for (Node<T> vertex : pGraph.getNodes()) {
+				shorestPath.put(vertex, new D<T>(Integer.MAX_VALUE));
+			}
+			shorestPath.get(origin).setPreviousVertex(origin);
+			shorestPath.get(origin).setWeight(0);
+			unvisitedVertices.remove(origin);
+			for (Arc<T> adjacency : origin.getArcs()) {
+				shorestPath.get(adjacency.getDestination()).setPreviousVertex(adjacency.getOrigin());
+				shorestPath.get(adjacency.getDestination()).setWeight(adjacency.getWeight());
+			}
+			while (unvisitedVertices.size() != 1) {
+				Node<T> minimunVertex = findMinimunVertex();
+				unvisitedVertices.remove(minimunVertex);
+				for (Node<T> vertex : unvisitedVertices) {
+					Arc<T> arcFromMinimun = minimunVertex.getArc(vertex);
+					if (arcFromMinimun != null) {
+						int weight = shorestPath.get(minimunVertex).getWeight() + arcFromMinimun.getWeight();
+						if (shorestPath.get(vertex).getWeight() > weight) {
+							shorestPath.get(vertex).setWeight(weight);
+							shorestPath.get(vertex).setPreviousVertex(minimunVertex);
+						} // end if
 					} // end if
-				} // end if
-			} // end for
-		} // end while
+				} // end for
+			} // end while
+		}
 	}
 	
 	/**

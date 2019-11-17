@@ -1,9 +1,9 @@
 package model;
 
 public class Player {
-	char user[];
-	char password[];
-	int score;
+	private char user[];
+	private char password[];
+	private int score;
 	
 	public Player (char[] pUser, char[] Ppassword) {
 		user = new char[60];

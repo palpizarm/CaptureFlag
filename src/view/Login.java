@@ -5,6 +5,10 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class Login extends javax.swing.JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// Variables declaration - do not modify 
     private JPanel panel;   
     private JTextField email;

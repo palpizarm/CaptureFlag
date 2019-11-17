@@ -11,9 +11,9 @@ import java.util.Iterator;
  * 
  * @author pablo
  */
-public class MinimunSpanningTree<T> {
+public class MinimunSpanningTree<T> extends algorithmPath<T>{
 	
-	Graph<T> aclyclicGraph;
+	Graph<T> aclyclicGraph = null;
 	/*
 	 * Constructor
 	 */
@@ -21,7 +21,11 @@ public class MinimunSpanningTree<T> {
 		aclyclicGraph = new Graph<T>();
 	}
 	
-	public void findMinimunSpanningTree(Graph<T> pGraph) {
+	@Override
+	/**
+	 * @param pGraph
+	 */
+	public void findPath(Graph<T> pGraph) {
 		ArrayList<Arc<T>> arcs = pGraph.getArcs();
 		ArrayList<Node<T>> unvisitedVertex = new ArrayList<Node<T>>(pGraph.getNodes());
 		Collections.sort(arcs);
@@ -33,7 +37,6 @@ public class MinimunSpanningTree<T> {
 				Node<T> originVertex  = aclyclicGraph.addNode(arc.getOrigin().getValue());
 				Node<T> destinationVertex  = aclyclicGraph.addNode(arc.getDestination().getValue());
 				aclyclicGraph.addArc(originVertex, destinationVertex, arc.getWeight());
-				aclyclicGraph.addArc(destinationVertex, originVertex, arc.getWeight());
 			}
 		}
 		
@@ -41,6 +44,21 @@ public class MinimunSpanningTree<T> {
 	
 	public Graph<T> getGraph() {
 		return aclyclicGraph;
+	}
+
+	@Override
+	public ArrayList<Node<T>> getPathTo(Node<T> pDestination) throws Exception {
+		if (origin == null) {
+			throw new Exception("Origin node is null");
+		}
+		ArrayList<Node<T>> path = new ArrayList<Node<T>>();
+		path.add(origin);
+		Node<T> nextNode = origin;
+		while(nextNode != pDestination) {
+			path.add(nextNode.getArcs().get(0).getDestination());
+			nextNode = nextNode.getArcs().get(0).getDestination();
+		}
+		return path;
 	}
 	
 }
