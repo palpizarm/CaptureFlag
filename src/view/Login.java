@@ -45,16 +45,16 @@ public class Login extends javax.swing.JFrame {
 
         labelPasword.setFont(new Font("Times New Roman", 0, 24)); 
         labelPasword.setForeground(new Color(0, 0, 102));
-        labelPasword.setText("Contraseña:");
+        labelPasword.setText("Pasword:");
 
         labelEmail.setFont(new Font("Times New Roman", 0, 24)); 
         labelEmail.setForeground(new Color(0, 0, 102));
-        labelEmail.setText("Correo:");
+        labelEmail.setText("Mail:");
 
         loginButton.setBackground(new Color(0, 0, 102));
         loginButton.setForeground(new Color(255, 255, 255));
         loginButton.setFont(new Font("Times New Roman", 0, 24)); 
-        loginButton.setText("Iniciar Sesión");
+        loginButton.setText("Log in: ");
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 loginButtonActionPerformed(evt);
@@ -64,7 +64,7 @@ public class Login extends javax.swing.JFrame {
         registerButton.setBackground(new Color(0, 0, 102));
         registerButton.setForeground(new Color(255, 255, 255));
         registerButton.setFont(new Font("Times New Roman", 0, 24)); 
-        registerButton.setText("Registrarse");
+        registerButton.setText("sign in: ");
         registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 registerButtonActionPerformed(evt);
