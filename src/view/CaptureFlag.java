@@ -53,7 +53,6 @@ public class CaptureFlag extends JFrame implements IContants{
 	public void paint(Graphics g){
 		super.paint(g);
 		g.drawImage(bg_image,X_APP,Y_APP,WIDTH_APP,HEIGHT_APP,null);
-		
 	}
 	
 	public static void main(String[] args) {
