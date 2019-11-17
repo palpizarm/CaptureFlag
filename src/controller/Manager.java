@@ -42,7 +42,7 @@ public class Manager {
 	
 	private void createMap() {
 		try {
-			ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>(jsonHandler.getObstacles("mapa1.json"));
+			//ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>(jsonHandler.getObstacles("mapa1.json"));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return;

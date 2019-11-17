@@ -4,14 +4,19 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONStringer;
+import org.json.JSONTokener;
 
-import jdk.nashorn.internal.parser.JSONParser;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+
 import model.Obstacle;
 
 
 public class JsonLoader {
-
 	public JsonLoader() {
 		
 	}
@@ -19,8 +24,14 @@ public class JsonLoader {
 	public ArrayList<Obstacle> getObstacles(String pFileName) throws Exception{  
 		ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 		try {
-			JSONObject jsonObject = new JSONObject(pFileName);
-			JSONArray obstaculos = (JSONArray) jsonObject.get("obstaculos");
+	        InputStream is = getClass().getResourceAsStream(pFileName);
+	        if (is == null) {
+	            throw new NullPointerException("Cannot find resource file " + pFileName);
+	        }
+
+	        JSONTokener tokener = new JSONTokener(is.toString());
+	        JSONObject objects = new JSONObject(tokener);
+			JSONArray obstaculos = (JSONArray) objects.get("obstaculos");
 			for (int index = 0; index < obstaculos.length(); index++) {
 				JSONObject object = (JSONObject)obstaculos.get(index);
 				String x1 = ((String)object.get("x1"));
