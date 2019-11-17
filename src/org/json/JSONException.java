@@ -43,7 +43,12 @@ package org.json;
  */
 public class JSONException extends RuntimeException {
 
-    public JSONException(String s) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public JSONException(String s) {
         super(s);
     }
 

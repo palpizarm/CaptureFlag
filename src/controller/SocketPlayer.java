@@ -1,4 +1,4 @@
-package player;
+package controller;
 
 import java.net.Socket;
 import java.io.DataInputStream;
@@ -6,8 +6,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Observable;
 
-import common.Message;
+import commons.Message;
 
+@SuppressWarnings("deprecation")
 public class SocketPlayer extends Observable implements Runnable {
 	private Socket socket;
 	private DataInputStream input;

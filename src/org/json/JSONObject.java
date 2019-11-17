@@ -86,7 +86,6 @@ public class JSONObject {
      * method returns "null".
      */
     public static final Object NULL = new Object() {
-        @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
         @Override
         public boolean equals(Object o) {
             return o == this || o == null; // API specifies this broken equals implementation
@@ -122,7 +121,7 @@ public class JSONObject {
      * @throws NullPointerException if any of the map's keys are null.
      */
     /* (accept a raw type for API compatibility) */
-    public JSONObject(Map copyFrom) {
+    public JSONObject(@SuppressWarnings("rawtypes") Map copyFrom) {
         this();
         Map<?, ?> contentsTyped = (Map<?, ?>) copyFrom;
         for (Map.Entry<?, ?> entry : contentsTyped.entrySet()) {
@@ -935,7 +934,8 @@ public class JSONObject {
      * @param o The object to wrap.
      * @return The wrapped (if necessary) form of the object {$code o}
      */
-    public static Object wrap(Object o) {
+    @SuppressWarnings("rawtypes")
+	public static Object wrap(Object o) {
         if (o == null) {
             return NULL;
         }
