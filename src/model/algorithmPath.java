@@ -9,7 +9,13 @@ import java.util.ArrayList;
  */
 public abstract class algorithmPath<T> {
 	
+	protected Node<T> origin;
 	
-	public abstract void findPath(Graph<T> pGraph, Node<T> pOrigin);
-	public abstract ArrayList<Node<T>> getPathTo(Node<T> origin ,Node<T> pDestination);
+	public void setOrigin(Node<T> pOrigin) {
+		origin = pOrigin;
+	}
+	
+	public abstract void findPath(Graph<T> pGraph) throws Exception;
+	
+	public abstract ArrayList<Node<T>> getPathTo(Node<T> pDestination) throws Exception;
 }

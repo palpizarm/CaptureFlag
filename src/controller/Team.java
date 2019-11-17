@@ -9,15 +9,12 @@ import model.algorithmPath;
 
 public class Team {
 	private ArrayList<Warrior> warrios = new ArrayList<Warrior>();
-	private ArrayList<Node<Point>> path;
-	private algorithmPath pathHandler;
+	private ArrayList<Node<Point>> path = new ArrayList<Node<Point>>();
 	
 	
-	public Team(ArrayList<Warrior> pWarrios, algorithmPath pHandler) {
+	public Team(ArrayList<Warrior> pWarrios, ArrayList<Node<Point>> pPath ) {
 		warrios = pWarrios;
-		pathHandler = pHandler;
-		
-		/*Asignar el primer nodo*/
+		path = pPath;
 	}
 	
 	public Node<Point> move() {

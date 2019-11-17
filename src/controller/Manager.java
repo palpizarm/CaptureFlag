@@ -1,10 +1,16 @@
 package controller;
 
+import java.util.ArrayList;
+
+import model.Obstacle;
+
 public class Manager {
 	private static final Manager INSTANCE = new Manager();
+	private JsonLoader jsonHandler;
 	
 	private Manager() {
-		
+		jsonHandler = new JsonLoader();
+		createMap();
 	}
 	
 	public static Manager getInstance() {
@@ -32,5 +38,15 @@ public class Manager {
 		}
 		char []user = pUser.toCharArray();
 		char []password = pPassword.toCharArray();
+	}
+	
+	private void createMap() {
+		try {
+			ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>(jsonHandler.getObstacles("mapa1.json"));
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+		
 	}
 }
