@@ -36,11 +36,11 @@ public class CaptureFlag extends JFrame implements IContants{
 	
 	private void loadImage() {
 		try {
-			bg_image = ImageIO.read(new File("D:\\Desktop\\Estructura de Datos\\CaptureFlag(Project)\\images\\background.bmp"));
-			obstacle_image = ImageIO.read(new File("D:\\Desktop\\Estructura de Datos\\CaptureFlag(Project)\\images\\obstacle.png"));
-			archer_image = ImageIO.read(new File("D:\\Desktop\\Estructura de Datos\\CaptureFlag(Project)\\images\\archer.png"));
-			marine_image = ImageIO.read(new File("D:\\Desktop\\Estructura de Datos\\CaptureFlag(Project)\\images\\marine.png"));
-			walloper_image = ImageIO.read(new File("D:\\Desktop\\Estructura de Datos\\CaptureFlag(Project)\\images\\walloper.png"));
+			bg_image = ImageIO.read(new File("C:\\Users\\sande\\Documents\\GitHub\\CaptureFlag\\images\\background.bmp"));
+			obstacle_image = ImageIO.read(new File("C:\\Users\\sande\\Documents\\GitHub\\CaptureFlag\\images\\obstacle.png"));
+			archer_image = ImageIO.read(new File("C:\\Users\\sande\\Documents\\GitHub\\CaptureFlag\\images\\archer.png"));
+			marine_image = ImageIO.read(new File("C:\\Users\\sande\\Documents\\GitHub\\CaptureFlag\\images\\marine.png"));
+			walloper_image = ImageIO.read(new File("C:\\Users\\sande\\Documents\\GitHub\\CaptureFlag\\images\\walloper.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
