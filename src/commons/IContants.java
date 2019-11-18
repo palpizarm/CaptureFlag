@@ -26,4 +26,6 @@ public interface IContants {
 	
 	
 	public int RADIO_POINT = 30;
+	public int OBSTACLE = 0;
+	public int EMPTY = 1;
 }
