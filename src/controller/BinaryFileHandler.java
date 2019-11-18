@@ -70,10 +70,8 @@ public class BinaryFileHandler implements IContants {
 				for (int index = 0; index < M2; index++) {
 					int countBytes = ((DataInputStream)DataStream[indexData[index]]).read(bytesObject[index],byteRead,bytesRangeObject);
 				}
-					Player player1 = (Player)getObject(bytesObject[0]);
-					Player palyer2 = (Player)getObject(bytesObject[1]);
-					
-
+				Player player1 = (Player)getObject(bytesObject[0]);
+				Player palyer2 = (Player)getObject(bytesObject[1]);
 				/**
 				 * Buscar iterar en los tramos y para ir ordenando
 				 */
