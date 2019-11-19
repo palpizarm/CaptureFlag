@@ -4,14 +4,11 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.FileInputStream;
 
 import model.Obstacle;
 
@@ -21,17 +18,22 @@ public class JsonLoader {
 		
 	}
 
+	@SuppressWarnings({ "resource", "deprecation" })
 	public ArrayList<Obstacle> getObstacles(String pFileName) throws Exception{  
 		ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 		try {
-	        InputStream is = getClass().getResourceAsStream(pFileName);
-	        if (is == null) {
-	            throw new NullPointerException("Cannot find resource file " + pFileName);
-	        }
+			File file = new File(pFileName);
+			DataInputStream input = new DataInputStream(
+					new BufferedInputStream(new FileInputStream(file)));
+			String line = "";
+			StringBuilder responseStrBuilder = new StringBuilder();
+			while((line = input.readLine()) != null){
 
-	        JSONTokener tokener = new JSONTokener(is.toString());
-	        JSONObject objects = new JSONObject(tokener);
-			JSONArray obstaculos = (JSONArray) objects.get("obstaculos");
+			    responseStrBuilder.append(line);
+			}
+			input.close();
+	        JSONObject objectFile = new JSONObject(responseStrBuilder.toString());
+			JSONArray obstaculos = (JSONArray) objectFile.get("obstaculos");
 			for (int index = 0; index < obstaculos.length(); index++) {
 				JSONObject object = (JSONObject)obstaculos.get(index);
 				String x1 = ((String)object.get("x1"));			
