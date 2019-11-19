@@ -36,7 +36,7 @@ public class JsonLoader {
 			JSONArray obstaculos = (JSONArray) objectFile.get("obstaculos");
 			for (int index = 0; index < obstaculos.length(); index++) {
 				JSONObject object = (JSONObject)obstaculos.get(index);
-				String x1 = ((String)object.get("x1"));
+				String x1 = ((String)object.get("x1"));			
 				String y1 = ((String)object.get("y1"));
 				String x2 = ((String)object.get("x2"));
 				String y2 = ((String)object.get("y2"));
