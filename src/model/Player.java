@@ -1,11 +1,6 @@
 package model;
 
-<<<<<<< HEAD
-public class Player {
-	private char user[];
-	private char password[];
-	private int score;
-=======
+
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
@@ -16,7 +11,6 @@ public class Player implements Serializable, Comparable<Player>{
 	char user[]= null;
 	char password[] = null;
 	int score = 0;
->>>>>>> externalSort
 	
 	public Player (char[] pUser, char[] Ppassword) {
 		user = pUser;
@@ -39,7 +33,7 @@ public class Player implements Serializable, Comparable<Player>{
 		this.score = pScore;
 	}
 	
-	public static void main(String args[]) {
+	/*public static void main(String args[]) {
 		Player p = new Player("hola555".toCharArray(), "hola".toCharArray());
 		Player p2 = new Player("hola555".toCharArray(), "hola".toCharArray());
 		Player p3 = new Player("hola666".toCharArray(), "hola".toCharArray());
@@ -72,7 +66,7 @@ public class Player implements Serializable, Comparable<Player>{
 			ex.printStackTrace();
 		}
 	}
-
+		*/
 	@Override
 	public int compareTo(Player pPlayer) {
 		StringBuilder stringBuilder = new StringBuilder();

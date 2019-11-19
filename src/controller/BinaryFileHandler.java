@@ -3,6 +3,7 @@ package controller;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import commons.IContants;
 import model.Player;
@@ -29,9 +31,9 @@ public class BinaryFileHandler implements IContants {
 	 * @param pFileName name of the file 
 	 * @throws Exception 
 	 */
-	public BinaryFileHandler(String pFileName, int pBytes) throws Exception {
-		fileName = pFileName;
-		bytesRangeObject = pBytes;
+	public BinaryFileHandler() throws Exception {
+		fileName = "players";
+		bytesRangeObject = 0;
 		auxiliarFiles = new File[M];
 		try {
 		file = new File(fileName);
@@ -138,17 +140,32 @@ public class BinaryFileHandler implements IContants {
 	}
 	
 	/**
-	 * 
+	 * Save the new player in the file
 	 */
-	public void write() {
-		
+	public void write(Player pPlayer, Player p2) {
+		try {
+			System.out.println(file.length());
+			FileOutputStream fileOutput = new FileOutputStream(fileName);
+			ObjectOutputStream out = new ObjectOutputStream(fileOutput);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(bos);
+			oos.writeObject(pPlayer);
+			oos.flush();
+			byte [] data = bos.toByteArray();
+			out.write(data);
+			oos.flush();
+			out.close(); 
+			fileOutput.close(); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * 
 	 */
-	public Player read() {
-		
-		return null;
+	public Player read(char[] pUser) {
+		Player player= null;
+		return player;
 	}
 }
