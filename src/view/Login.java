@@ -3,6 +3,8 @@ package view;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Login extends javax.swing.JFrame {
 	/**
@@ -140,16 +142,41 @@ public class Login extends javax.swing.JFrame {
     }                      
 
     
-    private void loginButtonActionPerformed(ActionEvent evt) {                                            
-        // TODO add your handling code here:
-    	String mail = email.getText(); 
+    private void loginButtonActionPerformed(ActionEvent evt) {       
+	
+    	// Patrón para validar el email
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        // El email a validar
+        String mail = email.getText();
+ 
+        Matcher mather = pattern.matcher(mail);
+ 
+        if (mather.find() == true) {
+            System.out.println("El email ingresado es válido.");
+        } else {
+            System.out.println("El email ingresado es inválido.");
+        }
+        // Pasword    	
     	String pasw = pasword.getText(); 
     	
     }                                           
 
     private void registerButtonActionPerformed(ActionEvent evt) {                                               
-        // TODO add your handling code here:
-    	String mail = email.getText(); 
+    	// Patrón para validar el email
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        // El email a validar
+        String mail = email.getText();
+ 
+        Matcher mather = pattern.matcher(mail);
+ 
+        if (mather.find() == true) {
+            System.out.println("El email ingresado es válido.");
+        } else {
+            System.out.println("El email ingresado es inválido.");
+        }
+        // Pasword    	
     	String pasw = pasword.getText(); 
     }                                              
 
