@@ -55,14 +55,15 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 	
 	public void paint(Graphics g){
 		super.paint(g);
-		g.drawImage(bg_image,X_APP,Y_APP,WIDTH_APP,HEIGHT_APP,null);
+		g.drawImage(bg_image,X_BG_MAP,Y_BG_MAP,WIDTH_APP,HEIGHT_APP,null);
+		manager.updateMap();
 	}
 
 	@Override
 	public void update(Observable caller, Object update) {
 		if (update instanceof int[][]) {
 			int map[][] = (int[][]) update;
-			Graphics g = this.getGraphics();
+			Graphics g = (Graphics)super.getGraphics();
 			for (int row = 0; row < MAP_ROW; row++) {
 				for (int column = 0; column < MAP_COLUMN; column++) {
 					if (map[row][column] == OBSTACLE) {
@@ -72,7 +73,6 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 			}
 		}
 	}
-	
 	
 	public static void main(String[] args) {
 		CaptureFlag application = new CaptureFlag();
