@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
 import commons.IContants;
 import model.Obstacle;
@@ -11,6 +12,7 @@ public class Manager extends Observable implements IContants {
 	private static final Manager INSTANCE = new Manager();
 	private JsonLoader jsonHandler = null;
 	private BinaryFileHandler binFileHandler = null;
+	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	
 	private int [][] map = null;
 	
@@ -26,6 +28,11 @@ public class Manager extends Observable implements IContants {
 	
 	public static Manager getInstance() {
 		return INSTANCE;
+	}
+	
+	
+	public void addObserver(Observer object) {
+		super.addObserver(object);
 	}
 	
 	/**
@@ -66,9 +73,8 @@ public class Manager extends Observable implements IContants {
 	 * Create the game map from obstacle 
 	 */
 	private void createMap() {
-		ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 		try {
-			obstacles = jsonHandler.getObstacles("mapa1.json");
+			obstacles = jsonHandler.getObstacles("mapa2.json");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return;
@@ -88,6 +94,9 @@ public class Manager extends Observable implements IContants {
 				}
 			}
 		}
+	}
+	
+	public void updateMap() {
 		this.setChanged();
 		this.notifyObservers(map);
 	}

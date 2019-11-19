@@ -6,10 +6,12 @@ import java.awt.Toolkit;
 public interface IContants {
 	
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	public int WIDTH_APP = (int)screenSize.getWidth();
-	public int HEIGHT_APP = (int)screenSize.getHeight()-20;
-	public int X_APP = 0;
+	public int WIDTH_APP = 1040;
+	public int HEIGHT_APP = 720;
+	public int X_APP = (int)(screenSize.getWidth()*0.5 - (WIDTH_APP*0.5));
 	public int Y_APP = 0;
+	public int X_BG_MAP = 0;
+	public int Y_BG_MAP = 0;
 	
 	public int AUX_FILES = 4;
 	
