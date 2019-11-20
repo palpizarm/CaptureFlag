@@ -74,7 +74,7 @@ public class Manager extends Observable implements IContants {
 	 */
 	private void createMap() {
 		try {
-			obstacles = jsonHandler.getObstacles("mapa2.json");
+			obstacles = jsonHandler.getObstacles("mapa3.json");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return;
@@ -85,14 +85,22 @@ public class Manager extends Observable implements IContants {
 			// Get the raw to start and raw where stop
 			int firstRow = Math.round(obs.getX()/RADIO_POINT);
 			int lastRow = firstRow + (int)Math.ceil(obs.getWidth()/RADIO_POINT); 
-			for (int raw = firstRow; raw < lastRow; raw++) {
+			for (int row = firstRow; row <= lastRow; row++) {
 				// Get the column to start and where stop
 				int firstColumn = Math.round(obs.getY()/RADIO_POINT);
 				int lastColumn = firstColumn + Math.round(obs.getHeight()/RADIO_POINT);
-				for (int column = firstColumn; column < lastColumn; column++) {
-					map[raw][column] = OBSTACLE;
+				for (int column = firstColumn; column <= lastColumn; column++) {
+					if (row < MAP_ROW && column < MAP_COLUMN)
+						map[row][column] = OBSTACLE;
 				}
 			}
+		}
+		for (int row = 0; row < MAP_ROW; row++) {
+			for (int column = 0; column < MAP_COLUMN; column++) {
+				System.out.print(map[row][column]);
+				System.out.print(" ");
+			}
+			System.out.println();
 		}
 	}
 	
