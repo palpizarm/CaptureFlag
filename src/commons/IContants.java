@@ -36,4 +36,7 @@ public interface IContants {
 	
 	public int MAP_ROW = (int)Math.floor(WIDTH_APP/(RADIO_POINT));
 	public int MAP_COLUMN = (int)Math.floor(HEIGHT_APP/(RADIO_POINT));
+	
+	public int USER_SIZE = 60;
+	public int PASSW_SIZE = 8;
 }
