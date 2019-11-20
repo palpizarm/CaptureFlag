@@ -3,6 +3,8 @@ package controller;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import commons.IContants;
 import model.Obstacle;
@@ -59,6 +61,31 @@ public class Manager extends Observable implements IContants {
 		} else {
 			throw new Exception("User unvaliad(try again)");
 		}
+	}
+	
+	/**
+	 * Validate Email
+	 * @param pMail
+	 * @return boolean
+	 */
+	public boolean validateEmail(String pMail){
+		// Patrón para validar el email
+	    Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+	                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+	    // El email a validar
+	    String mail = pMail;
+	
+	    Matcher mather = pattern.matcher(mail);
+	
+	    if (mather.find() == true) {
+	    	//El email ingresado es válido.
+	    	return true;
+	        
+	    } else {
+	    	//El email ingresado es inválido.
+	    	return false;
+	       
+	    }
 	}
 	
 	/**
