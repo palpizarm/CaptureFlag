@@ -45,6 +45,8 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 		this.menu = new JMenuBar();
 		JMenuItem item1 = new JMenuItem("Show stats");
 		this.menu.add(item1);
+		JMenuItem item2 = new JMenuItem("Start Game");
+		this.menu.add(item2);
 		this.setJMenuBar(this.menu);
 	}
 	
@@ -89,7 +91,7 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 					if (map[row][column] == OBSTACLE) {
 						g.drawImage(obstacle_image, row*RADIO_POINT, column*RADIO_POINT,RADIO_POINT,RADIO_POINT,null);
 					} else {
-						g.drawImage(walloper_image, chooseX(row*RADIO_POINT), chooseY(column*RADIO_POINT),RADIO_WARRIOR,RADIO_WARRIOR,null);
+						//g.drawImage(walloper_image, chooseX(row*RADIO_POINT), chooseY(column*RADIO_POINT),RADIO_WARRIOR,RADIO_WARRIOR,null);
 					}
 				}
 			}

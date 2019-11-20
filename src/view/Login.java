@@ -14,6 +14,8 @@ public class Login extends javax.swing.JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private Manager manager = null;
 	// Variables declaration - do not modify 
     private JPanel panel;   
     private JTextField email;
@@ -30,6 +32,7 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     public Login() {
+    	manager = Manager.getInstance();
         initComponents();
     }
                                  
@@ -145,20 +148,37 @@ public class Login extends javax.swing.JFrame {
     }                      
 
     
-        private void loginButtonActionPerformed(ActionEvent evt) {       
-    	Manager manag = null;
-    	boolean valid = manag.validateEmail(email.getText());
+    private void loginButtonActionPerformed(ActionEvent evt) {
+        String passw = pasword.getText();    
+        String user = email.getText();
+    	boolean validate = manager.validateEmail(email.getText());
+    	if (!validate) {
+    		JOptionPane.showMessageDialog(null, "Unvilad email ¡Please enter again", "Email" ,JOptionPane.ERROR_MESSAGE);
+    	} else {  
+    		try {
+				manager.loginPlayer(user, passw);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR" ,JOptionPane.ERROR_MESSAGE);
+			}
+    	} 	
     	
-        // Pasword    	
-    	String pasw = pasword.getText(); 
     	
     }                                           
 
     private void registerButtonActionPerformed(ActionEvent evt) {                                               
-    	Manager manag = null;
-    	boolean valid = manag.validateEmail(email.getText());
-        // Pasword    	
-    	String pasw = pasword.getText(); 
+    	String passw = pasword.getText();
+    	String user = email.getText();
+    	boolean validate = manager.validateEmail(user);
+    	if (!validate) {
+    		JOptionPane.showMessageDialog(null, "Unvilad email ¡Please enter again", "Email" ,JOptionPane.ERROR_MESSAGE);
+    	} else {  
+    		try {
+				manager.registerPlayer(user, passw);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR" ,JOptionPane.ERROR_MESSAGE);
+			}
+    	}
+    	
     }                                                
 
 }

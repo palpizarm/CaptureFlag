@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -7,8 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import commons.IContants;
+import model.Graph;
 import model.Obstacle;
 import model.Player;
+import model.Point;
+import model.Node;
 
 @SuppressWarnings("deprecation")
 public class Manager extends Observable implements IContants {
@@ -16,12 +20,17 @@ public class Manager extends Observable implements IContants {
 	private JsonLoader jsonHandler = null;
 	private BinaryFileHandler binFileHandler = null;
 	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+	private Graph<Point> graphLeftToRigth = null;
+	private Graph<Point> graphRigthToLeft = null;
+	
 	
 	
 	private int [][] map = null;
 	
 	private Manager() {
 		jsonHandler = new JsonLoader();
+		graphLeftToRigth = new Graph<Point>();
+		graphRigthToLeft = new Graph<Point>();
 		try {
 			binFileHandler = new BinaryFileHandler();
 		} catch (Exception e) {
@@ -150,6 +159,43 @@ public class Manager extends Observable implements IContants {
 		for (int raw = 0; raw < pRow; raw++) {
 			for (int column = 0; column < pColumn; column++) {
 				map[raw][column] = EMPTY;
+			}
+		}
+	}
+	
+	private ArrayList<Node<Point>> getVertex() {
+		ArrayList<Node<Point>> vertex = new ArrayList<Node<Point>>();
+		for (int row = 0; row < MAP_ROW; row++) {
+			for (int column = 0; column < MAP_COLUMN; column++) {
+				Point point = new Point(row*RADIO_POINT, column*RADIO_POINT,RADIO_POINT); 
+				Node<Point> current = graphLeftToRigth.addNode(point);
+				graphRigthToLeft.addNode(point);
+				vertex.add(current);
+				}
+			}
+		return vertex;
+	}
+	
+	private void addEdgeToGraphs() {
+		ArrayList<Node<Point>> vertex = getVertex();
+		for (int indexRow = 0; indexRow < MAP_ROW; indexRow++) {
+			for (int indexColumn = 0; indexColumn < MAP_ROW; indexColumn++) {
+				// GrpahLeftToRight
+				if (indexRow != MAP_ROW-1) {
+					graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_COLUMN*(indexRow+1)+indexColumn), 1);
+				}
+				graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_ROW*indexRow+indexColumn+1), 1);
+				if (indexRow != 0) {	
+					graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_ROW*(indexRow-1)+indexColumn), 1);
+				}
+				//GraphRigthToLeft
+				if (indexRow != MAP_ROW-1) {
+					graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_ROW*(indexRow+1)+indexColumn), 1);
+				}
+				graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_ROW*indexRow+indexColumn+1), 1);
+				if (indexRow != 0) {	
+					graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_ROW*(indexRow-1)+indexColumn), 1);
+				}
 			}
 		}
 	}
