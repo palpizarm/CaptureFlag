@@ -1,9 +1,5 @@
 package model;
 
-
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Player implements Serializable, Comparable<Player>{
@@ -31,6 +27,17 @@ public class Player implements Serializable, Comparable<Player>{
 	
 	public void setScore(int pScore) {
 		this.score = pScore;
+	}
+	
+	@Override
+	public int compareTo(Player pPlayer) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(this.user);
+		String user1 = stringBuilder.toString();
+		stringBuilder.delete(0,stringBuilder.length()-1);
+		stringBuilder.append(pPlayer.getUser());
+		String user2 = stringBuilder.toString();
+		return user1.compareTo(user2);
 	}
 	
 	/*public static void main(String args[]) {
@@ -67,14 +74,4 @@ public class Player implements Serializable, Comparable<Player>{
 		}
 	}
 		*/
-	@Override
-	public int compareTo(Player pPlayer) {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(this.user);
-		String user1 = stringBuilder.toString();
-		stringBuilder.delete(0,stringBuilder.length()-1);
-		stringBuilder.append(pPlayer.getUser());
-		String user2 = stringBuilder.toString();
-		return user1.compareTo(user2);
-	}
 }

@@ -2,15 +2,19 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
 import commons.IContants;
 import model.Obstacle;
+import model.Player;
 
 @SuppressWarnings("deprecation")
 public class Manager extends Observable implements IContants {
 	private static final Manager INSTANCE = new Manager();
 	private JsonLoader jsonHandler = null;
 	private BinaryFileHandler binFileHandler = null;
+	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+	
 	
 	private int [][] map = null;
 	
@@ -22,10 +26,16 @@ public class Manager extends Observable implements IContants {
 			e.printStackTrace();
 		}
 		createMap();
+		binFileHandler.sort();
 	}
 	
 	public static Manager getInstance() {
 		return INSTANCE;
+	}
+	
+	
+	public void addObserver(Observer object) {
+		super.addObserver(object);
 	}
 	
 	/**
@@ -38,11 +48,17 @@ public class Manager extends Observable implements IContants {
 		if (pUser.length() > 60) {
 			throw new Exception("User length is greater than 60 characters");
 		}
-		if (pPassword.length() > 8) {
-			throw new Exception("Password can't be greater than 8 characters");
+		if (pPassword.length() != 8) {
+			throw new Exception("Password should be of 8 characters");
 		}
 		char []user = pUser.toCharArray();
 		char []password = pPassword.toCharArray();
+		Player player = new Player(user, password);
+		if (binFileHandler.search(user) == null) {
+			binFileHandler.write(player);
+		} else {
+			throw new Exception("User unvaliad(try again)");
+		}
 	}
 	
 	/**
@@ -55,20 +71,24 @@ public class Manager extends Observable implements IContants {
 		if (pUser.length() > 60) {
 			throw new Exception("User length is greater than 60 characters");
 		}
-		if (pPassword.length() > 8) {
+		if (pPassword.length() == 8) {
 			throw new Exception("Password can't be greater than 8 characters");
 		}
+		Player player = null;
 		char []user = pUser.toCharArray();
 		char []password = pPassword.toCharArray();
+		if ((player = binFileHandler.search(user)) != null) {
+			
+		}
+		throw new Exception("Don't find the user");
 	}
 	
 	/**
 	 * Create the game map from obstacle 
 	 */
 	private void createMap() {
-		ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 		try {
-			obstacles = jsonHandler.getObstacles("mapa1.json");
+			obstacles = jsonHandler.getObstacles("mapa2.json");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return;
@@ -79,15 +99,19 @@ public class Manager extends Observable implements IContants {
 			// Get the raw to start and raw where stop
 			int firstRow = Math.round(obs.getX()/RADIO_POINT);
 			int lastRow = firstRow + (int)Math.ceil(obs.getWidth()/RADIO_POINT); 
-			for (int raw = firstRow; raw < lastRow; raw++) {
+			for (int row = firstRow; row <= lastRow; row++) {
 				// Get the column to start and where stop
 				int firstColumn = Math.round(obs.getY()/RADIO_POINT);
 				int lastColumn = firstColumn + Math.round(obs.getHeight()/RADIO_POINT);
-				for (int column = firstColumn; column < lastColumn; column++) {
-					map[raw][column] = OBSTACLE;
+				for (int column = firstColumn; column <= lastColumn; column++) {
+					if (row < MAP_ROW && column < MAP_COLUMN)
+						map[row][column] = OBSTACLE;
 				}
 			}
 		}
+	}
+	
+	public void updateMap() {
 		this.setChanged();
 		this.notifyObservers(map);
 	}
@@ -100,6 +124,17 @@ public class Manager extends Observable implements IContants {
 			for (int column = 0; column < pColumn; column++) {
 				map[raw][column] = EMPTY;
 			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		Manager manager = Manager.getInstance();
+		try {
+			manager.registerPlayer("pabloalpizar99@gmail.com", "12345678");
+			manager.registerPlayer("pmonge1999@hotmail.com", "87654321");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
