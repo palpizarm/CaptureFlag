@@ -3,6 +3,8 @@ package controller;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import commons.IContants;
 import model.Obstacle;
