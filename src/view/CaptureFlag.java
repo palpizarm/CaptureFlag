@@ -92,7 +92,9 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 		g.drawImage(bg_image,X_BG_MAP,Y_BG_MAP,WIDTH_APP,HEIGHT_APP,null);
 		manager.updateMap();
 	}
-
+	
+	
+	
 	@Override
 	public void update(Observable caller, Object update) {
 		if (update instanceof int[][]) {
