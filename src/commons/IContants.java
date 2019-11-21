@@ -64,5 +64,9 @@ public interface IContants {
 	public int TEAM2 = 2;
 	public int TEAM3 = 3;
 	
+	public int UPPERCORNER = 0;
+	public int CENTER = 1;
+	public int LOWERCORNER = 2;
+	
 	public String OPTIONS_TEAM[] = {"TEAM 1", "TEAM 2", "TEAM 3"};
 }

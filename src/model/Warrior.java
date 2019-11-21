@@ -6,6 +6,7 @@ public abstract class Warrior  implements IPersonage, IContants{
 	protected int attack;
 	protected int energy;
 	protected float delay;
+	protected int type = 0;
 	
 	public Warrior() {
 		energy = ENERGEY;
@@ -23,5 +24,9 @@ public abstract class Warrior  implements IPersonage, IContants{
 	
 	public boolean isDie() {
 		return (energy == 0);
+	}
+	
+	public int getType() {
+		return type;
 	}
 }

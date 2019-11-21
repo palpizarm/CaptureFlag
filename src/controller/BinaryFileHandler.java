@@ -200,7 +200,7 @@ public class BinaryFileHandler implements IContants {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return player;
 	}

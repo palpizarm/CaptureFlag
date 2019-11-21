@@ -7,10 +7,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import commons.IContants;
+import model.Dijkstra;
+import model.Floyd;
 import model.Graph;
+import model.MinimunSpanningTree;
 import model.Obstacle;
 import model.Player;
 import model.Point;
+import model.algorithmPath;
 import model.Node;
 
 @SuppressWarnings("deprecation")
@@ -22,13 +26,21 @@ public class Manager extends Observable implements IContants {
 	private Graph<Point> graphLeftToRigth = null;
 	private Graph<Point> graphRigthToLeft = null;
 	private boolean userLogin = false;
-	
+	private ArrayList<Team> teams = new ArrayList<Team>();
+	private ArrayList<ArrayList<Node<Point>>> vertexLeftToRight = null;
+	private ArrayList<ArrayList<Node<Point>>> vertexRightToLeft = null;	
 	private int [][] map = null;
+	private algorithmPath<Point> floyd = null;
+	private algorithmPath<Point> MST = null;
+	private algorithmPath<Point> dijkstra = null;
 	
 	private Manager() {
 		jsonHandler = new JsonLoader();
 		graphLeftToRigth = new Graph<Point>();
 		graphRigthToLeft = new Graph<Point>();
+		floyd = new Floyd<Point>();
+		MST = new MinimunSpanningTree<Point>();
+		dijkstra = new Dijkstra<Point>();
 		try {
 			binFileHandler = new BinaryFileHandler();
 		} catch (Exception e) {
@@ -168,6 +180,7 @@ public class Manager extends Observable implements IContants {
 	private ArrayList<ArrayList<Node<Point>>> getVertex() {
 		ArrayList<ArrayList<Node<Point>>> vertex = new ArrayList<ArrayList<Node<Point>>>();
 		for (int row = 0; row < MAP_ROW; row++) {
+			vertex.add(new ArrayList<Node<Point>>());
 			for (int column = 0; column < MAP_COLUMN; column++) {
 				Point point = new Point(row*RADIO_POINT, column*RADIO_POINT,RADIO_POINT); 
 				Node<Point> current = graphLeftToRigth.addNode(point);
@@ -182,12 +195,13 @@ public class Manager extends Observable implements IContants {
 	 * To create the both graph, left to right and right to left  
 	 */
 	private void addEdgeToGraphs() {
-		ArrayList<ArrayList<Node<Point>>> vertexLeftToRight = getVertex();
-		ArrayList<ArrayList<Node<Point>>> vertexRightToLeft = getVertex();
+		vertexLeftToRight = getVertex();
+		vertexRightToLeft = getVertex();
 		for (int indexRow = 0; indexRow < MAP_ROW; indexRow++) {
-			for (int indexColumn = 0; indexColumn < MAP_ROW; indexColumn++) {
+			for (int indexColumn = 0; indexColumn < MAP_COLUMN; indexColumn++) {
 				// GrpahLeftToRight
-				graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow).get(indexColumn+1), 1);
+				if (indexColumn != MAP_COLUMN -1)
+					graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow).get(indexColumn+1), 1);
 				if (indexRow != 0 && map[indexRow-1][indexColumn] != OBSTACLE) {	
 					graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow-1).get(indexColumn), 1);
 				}
@@ -195,19 +209,51 @@ public class Manager extends Observable implements IContants {
 					graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow+1).get(indexColumn), 1);
 				}
 				//GraphRigthToLeft
-				graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-2), 1);
+				if (indexColumn != MAP_COLUMN-1)
+					graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-2), 1);
 				if (indexRow != 0 && map[indexRow-1][indexColumn] != OBSTACLE) {	
-					graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW-indexRow-2).get(MAP_COLUMN-indexColumn-1), 1);
+					graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW-indexRow-1).get(MAP_COLUMN-indexColumn-1), 1);
 				}
 				if (indexRow != MAP_ROW-1 && map[indexRow+1][indexColumn] != OBSTACLE) {
-					graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW - indexRow).get(MAP_COLUMN-indexColumn-1), 1);
+					graphRigthToLeft.addArc(vertexRightToLeft.get((MAP_ROW-1) - indexRow).get((MAP_COLUMN-1)-indexColumn),vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1), 1);
 				}
 			}
 		}
 	}
-	
-	
-	public void getGameAdjusments() {
-		
+
+
+	public void getGameAdjusments(Team pTeam1,Team pTeam2, Team pTeam3, ArrayList<Integer> destinys) {
+		addEdgeToGraphs();
+		Node<Point> origin = vertexLeftToRight.get(MAP_ROW/2).get(0);  
+		ArrayList<Node<Point>> dest = new ArrayList<Node<Point>>();
+		for(int destTeam = 0 ; destTeam < destinys.size(); destTeam++) {
+			if(destinys.get(destTeam) == UPPERCORNER) {
+				dest.add(vertexLeftToRight.get(0).get(MAP_COLUMN-1));
+			}else if(destinys.get(destTeam) == CENTER) {
+				dest.add(vertexLeftToRight.get(MAP_ROW/2).get(MAP_COLUMN/2));
+			}else if(destinys.get(destTeam) == LOWERCORNER) {
+				dest.add(vertexLeftToRight.get(MAP_ROW-1).get(MAP_COLUMN-1));
+			}
+		}
+		try {
+			floyd.setOrigin(origin);
+			dijkstra.setOrigin(origin);
+			MST.setOrigin(origin);
+			floyd.findPath(graphLeftToRigth);
+			dijkstra.findPath(graphLeftToRigth);
+			MST.findPath(graphLeftToRigth);
+			pTeam1.setPath(floyd.getPathTo(dest.get(0)));
+			pTeam2.setPath(dijkstra.getPathTo(dest.get(1)));
+			pTeam3.setPath(MST.getPathTo(dest.get(2)));
+		} catch (Exception e) {						// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		teams.add(pTeam1);
+		teams.add(pTeam2);
+		teams.add(pTeam3);
+		this.setChanged();
+		this.notifyObservers(2);
+		this.setChanged();
+		this.notifyObservers(teams);
 	}
 }

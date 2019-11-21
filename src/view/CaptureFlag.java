@@ -3,6 +3,7 @@ package view;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -11,7 +12,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
+import controller.Team;
+import model.Warrior;
 import commons.IContants;
 import controller.Manager;
 
@@ -79,7 +81,9 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 		g.drawImage(bg_image,X_BG_MAP,Y_BG_MAP,WIDTH_APP,HEIGHT_APP,null);
 		manager.updateMap();
 	}
-
+	
+	
+	
 	@Override
 	public void update(Observable caller, Object update) {
 		if (update instanceof int[][]) {
@@ -96,6 +100,30 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 				}
 			}
 			
+		}
+		if (update instanceof Integer && (int)update == 2) {
+			this.setVisible(true);
+		}
+		if (update instanceof ArrayList<?>) {
+			Graphics g = (Graphics)super.getGraphics();
+			try {
+				ArrayList<Team> teams = (ArrayList<Team>)update;
+				for (Team team: teams) {
+					for (Warrior warrior : team.getWarrior()) {
+						if (warrior.getType() == 1) {
+							g.drawImage(walloper_image, chooseX(team.getX()*RADIO_POINT), chooseY(team.getY()*RADIO_POINT),RADIO_WARRIOR,RADIO_WARRIOR,null);
+						}
+						else if (warrior.getType() == 2) {
+							g.drawImage(walloper_image, chooseX(team.getX()*RADIO_POINT), chooseY(team.getY()*RADIO_POINT),RADIO_WARRIOR,RADIO_WARRIOR,null);
+						}
+						else if (warrior.getType() == 3) {
+							g.drawImage(marine_image, chooseX(team.getX()*RADIO_POINT), chooseY(team.getY()*RADIO_POINT),RADIO_WARRIOR,RADIO_WARRIOR,null);
+						}
+					}
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
 	}
 }

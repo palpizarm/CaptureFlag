@@ -8,5 +8,6 @@ public class Acher extends Warrior  implements IContants{
 		super();
 		this.attack = ARCHER_ATTACK;
 		this.delay = ARCHER_ATTACK_DELAY;
+		this.type = 1;
 	}
 }
