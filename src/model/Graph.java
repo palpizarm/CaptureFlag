@@ -27,6 +27,16 @@ public class Graph<T>{
 		nodes.add(result);
 		return result;
 	}
+	
+	public Node<T> addNode(Node<T> pNode) {
+		for (Node<T> node : nodes) {
+			if(node == pNode) {
+				return node;
+			}
+		}
+		nodes.add(pNode);
+		return pNode;
+	}
 
 	
 	public void addArc(Node<T> pOrigin, Node<T> pDestination, int pWeight) {

@@ -1,17 +1,14 @@
 package controller;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
 import commons.IContants;
@@ -20,7 +17,6 @@ import model.Player;
 public class BinaryFileHandler implements IContants {
 	private final int  M = AUX_FILES; 
 	private final int M2 = AUX_FILES/2;
-	private int bytesRangeObject;
 	private String fileName;
 	private File file;
 	private File [] auxiliarFiles;
@@ -33,8 +29,8 @@ public class BinaryFileHandler implements IContants {
 	 */
 	public BinaryFileHandler() throws Exception {
 		fileName = "players";
-		bytesRangeObject = 0;
 		auxiliarFiles = new File[M];
+		DataStream = new Object[M];
 		try {
 		file = new File(fileName);
 		} catch (Exception e) {
@@ -48,57 +44,75 @@ public class BinaryFileHandler implements IContants {
 	 */
 	private void multipleBalancedMix() {
 		int range = 1, countObject = 0;
-		int indexData [] = new int[M];
 		int byteRead = 0;
-		byte[][] bytesObject = null;
+		int outputIndex = 0;
+		boolean readble = true;
+		Player player1 = null , player2 = null;
+		int index[] = new int[M];
 		for (int fileIndex = 0; fileIndex < M; fileIndex++) {
 			auxiliarFiles[fileIndex] = new File("File" + fileIndex);
-			indexData[fileIndex] = fileIndex;
+			index[fileIndex] = fileIndex;
 		}
 		try {
+			// the first split of the object in the inputFile
 			countObject = shareOut();
+			if (countObject < 2) {
+				return;
+			}
 			do {
-				for (int index = 0; index < M; index++) {
-					if (index < M2) {
-						DataStream[indexData[index]] = new DataInputStream(
-								new BufferedInputStream(new FileInputStream(auxiliarFiles[indexData[index]])));
-				
+				for (int indexFile = 0; indexFile < M; indexFile++) {
+					if (indexFile < M2) {
+						FileInputStream fileIn = new FileInputStream(auxiliarFiles[index[indexFile]]);
+						DataStream[index[indexFile]] = (ObjectInput)new ObjectInputStream(fileIn);
+
 					} else {
-						DataStream[indexData[index]] = new DataOutputStream(	
-								new BufferedOutputStream(new FileOutputStream(auxiliarFiles[indexData[index]])));
+						FileOutputStream fileOutput = new FileOutputStream(auxiliarFiles[index[indexFile]]);
+						DataStream[index[indexFile]] = (ObjectOutput)new ObjectOutputStream(fileOutput);
 					}
 				}
-				bytesObject = new byte[range][bytesRangeObject];
-				for (int index = 0; index < M2; index++) {
-					int countBytes = ((DataInputStream)DataStream[indexData[index]]).read(bytesObject[index],byteRead,bytesRangeObject);
+				outputIndex = M2;
+				int splitRange = 0;
+				while (readble) {
+					player1 = (Player)(((ObjectInputStream)DataStream[index[0]]).readObject());
+					player2 = (Player)(((ObjectInputStream)DataStream[index[1]]).readObject());
+					while (splitRange < range ) {
+						try {
+							if (player1.compareTo(player2) > 0) {
+								((ObjectOutputStream)DataStream[index[outputIndex]]).writeObject(player1);
+								((ObjectOutputStream)DataStream[index[outputIndex]]).writeObject(player2);
+							} else {
+								((ObjectOutputStream)DataStream[index[outputIndex]]).writeObject(player2);
+								((ObjectOutputStream)DataStream[index[outputIndex]]).writeObject(player1);
+							}
+							if(outputIndex == M) {
+								outputIndex = M2;
+							} else {
+								outputIndex++;
+							}
+						} catch (Exception e) {
+							readble = false;
+						}
+					}
 				}
-				Player player1 = (Player)getObject(bytesObject[0]);
-				Player palyer2 = (Player)getObject(bytesObject[1]);
-				/**
-				 * Buscar iterar en los tramos y para ir ordenando
-				 */
-			} while (range > countObject);
+				player1 = null; player2 = null;
+			} while (range < countObject);
+			// Change the order of file
+			for (int i = 0; i < M2; i++)
+			{
+				int aux;
+				aux = index[i];
+				index[i] = index[i+M2];
+				index[i+M2] = aux;
+			}	
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (Exception e) {
 			System.out.println("ERROR: multiple Balanced Mix throw a error");
 			return;
 		}
 
-	}
-	
-	
-	private Object getObject(byte[] byteArr) throws IOException, ClassNotFoundException {
-		ByteArrayInputStream bis = new ByteArrayInputStream(byteArr);
-		ObjectInput in = new ObjectInputStream(bis);
-		return in.readObject();
-	}
-	/**
-	 * 
-	 * @return the number of object in the file
-	 */
-	private int findBytesSplit() {
-		int bytesCount = (int) file.length();
-		int objectCount = bytesCount/bytesRangeObject;
-		return objectCount;
 	}
 	
 	/**
@@ -108,32 +122,38 @@ public class BinaryFileHandler implements IContants {
 	 */
 	private int shareOut() throws IOException {
 		int outputIndex = 0;
-		DataInputStream originInput = new DataInputStream(
-								new BufferedInputStream(new FileInputStream(file)));
-		DataStream = new DataOutputStream[M2];
-		
+		Player player = null;
+		boolean readble = true;
+		int objectCount = 0;
+		FileInputStream fileIn = new FileInputStream(file);
+		ObjectInputStream originInput =	new ObjectInputStream(fileIn);
+		System.out.println(file.length());
 		for (outputIndex = 0; outputIndex < M2; outputIndex++) {
-			DataStream[outputIndex] = new DataOutputStream(
-					new BufferedOutputStream(new FileOutputStream(auxiliarFiles[outputIndex])));
+			FileOutputStream fileOutput = new FileOutputStream(auxiliarFiles[outputIndex]);
+			DataStream[outputIndex] = (ObjectOutput)new ObjectOutputStream(fileOutput);
 		}
 		outputIndex = 0;
-		int countSplit = findBytesSplit();
-		byte []bytes = null;
-		int indexFile = 0;
-		for (int count = 0; count < countSplit; count++) {
-			int countBytes = originInput.read(bytes,indexFile,bytesRangeObject);
-			((BufferedOutputStream) DataStream[outputIndex]).write(bytes);
-			outputIndex=(outputIndex+1)%M2;
-			indexFile += bytesRangeObject;
+		while (readble) { 
+			try {
+				player = (Player)originInput.readObject();
+				((ObjectOutputStream)DataStream[outputIndex]).writeObject(player);
+				((ObjectOutputStream)DataStream[outputIndex]).flush();
+				outputIndex=(outputIndex+1)%M2;
+				objectCount++;
+			} catch (EOFException e) {
+				readble = false;
+				originInput.close();
+			} catch (Exception e) {
+				readble = false;
+			}
 		}
-		originInput.close();
-		return countSplit;
+		return objectCount;
 	}
 
 
 	
 	/**
-	 * 
+	 * Sort the players with external balanced mix
 	 */
 	public void sort() {
 		multipleBalancedMix();
@@ -142,20 +162,15 @@ public class BinaryFileHandler implements IContants {
 	/**
 	 * Save the new player in the file
 	 */
-	public void write(Player pPlayer, Player p2) {
+	public void write(Player pPlayer) {
 		try {
-			System.out.println(file.length());
-			FileOutputStream fileOutput = new FileOutputStream(fileName);
+			FileOutputStream fileOutput = new FileOutputStream(file,true);
 			ObjectOutputStream out = new ObjectOutputStream(fileOutput);
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(bos);
-			oos.writeObject(pPlayer);
-			oos.flush();
-			byte [] data = bos.toByteArray();
-			out.write(data);
-			oos.flush();
-			out.close(); 
-			fileOutput.close(); 
+			out.writeObject(pPlayer);
+			out.flush();
+			out.close();
+			fileOutput.close();
+			multipleBalancedMix();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -164,8 +179,29 @@ public class BinaryFileHandler implements IContants {
 	/**
 	 * 
 	 */
-	public Player read(char[] pUser) {
+	public Player search(char[] pUser) {
 		Player player= null;
+		FileInputStream fileIn = null;
+		ObjectInputStream originInput = null;
+		boolean readble = true;
+		try {
+			fileIn = new FileInputStream(file);
+			originInput =	new ObjectInputStream(fileIn);
+			while (readble) { 
+				try {
+					player = (Player)originInput.readObject();
+					if (player.getUser() == pUser) {
+						readble = false;
+					}
+				} catch (ClassNotFoundException | IOException e) {
+					readble = false;
+					player = null;
+					fileIn.close();
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return player;
 	}
 }

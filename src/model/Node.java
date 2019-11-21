@@ -14,7 +14,7 @@ public class Node<T> {
 		this.arcs = new ArrayList<Arc<T>>();
 		this.visited = false;
 	}
-	
+
 	public T getValue() {
 		return this.value; 
 	}
