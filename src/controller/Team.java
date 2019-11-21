@@ -16,6 +16,14 @@ public class Team {
 		path = pPath;
 	}
 	
+	public Team(ArrayList<Warrior> pWarrios ) {
+		warriors = pWarrios;
+		path = null;
+	}
+	
+	public void setPath(ArrayList<Node<Point>> pPath) {
+		path = pPath;
+	}
 	public ArrayList<Warrior> getWarrior() {
 		return warriors;
 	}
