@@ -15,7 +15,7 @@ public class Login extends javax.swing.JFrame implements Observer{
 	private static final long serialVersionUID = 1L;
 	
 	private Manager manager = null;
-	// Variables declaration - do not modify 
+	// Variables declaration
     private JPanel panel;   
     private JTextField email;
     private JTextField pasword;
