@@ -2,12 +2,16 @@ package view;
 
 import java.awt.*;
 import java.awt.Image;
-import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import commons.IContants;
+
 import controller.Manager;
+import java.util.ArrayList;
+
+import commons.IContants;
 import controller.Team;
 
 import javax.swing.*;
@@ -23,7 +27,10 @@ import model.*;
  *
  * @author Alexander
  */
-public class StartGame extends javax.swing.JFrame implements IContants{
+
+@SuppressWarnings("deprecation")
+public class StartGame extends javax.swing.JFrame implements IContants, Observer{
+	private static final long serialVersionUID = 1L;
 	private Manager manager = null;
 	private ArrayList<Warrior> Team1 = new ArrayList<Warrior>();
 	private ArrayList<Warrior> Team2 = new ArrayList<Warrior>();
@@ -32,8 +39,6 @@ public class StartGame extends javax.swing.JFrame implements IContants{
 	private int destinyTeam2 = CENTER;
 	private int destinyTeam3 = LOWERCORNER;
 	
-	
-	 // Variables declaration                    
     private javax.swing.JLabel archerAvailable;
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonStart;
@@ -58,11 +63,9 @@ public class StartGame extends javax.swing.JFrame implements IContants{
      */
     public StartGame() {
         this.setTitle("Config Game");
+        manager = Manager.getInstance();
+        manager.addObserver(this);
         initComponents();
-        
-        
-      
-        
     }
 
                    
@@ -298,25 +301,24 @@ public class StartGame extends javax.swing.JFrame implements IContants{
                 		
         }    	
     	else if("Center".equals(choiceDestiny.getSelectedItem())){
-            if("Team1".equals(choiceTeam.getSelectedItem())) {
-            	destinyTeam1 = CENTER;
-            }else if("Team2".equals(choiceTeam.getSelectedItem())){
-            	destinyTeam2 = CENTER;
-            }else if("Team3".equals(choiceTeam.getSelectedItem())){
-            	destinyTeam3 = CENTER;
-            }
-        
+    		if("Team1".equals(choiceTeam.getSelectedItem())) {
+    			destinyTeam1 = CENTER;
+    		}else if("Team2".equals(choiceTeam.getSelectedItem())){
+    			destinyTeam2 = CENTER;
+    		}else if("Team3".equals(choiceTeam.getSelectedItem())){
+    			destinyTeam3 = CENTER;
+    		}
     	}else if("Lower corner".equals(choiceDestiny.getSelectedItem())){
-            if("Team1".equals(choiceTeam.getSelectedItem())) {
-            	destinyTeam1 = LOWERCORNER;
-            }else if("Team2".equals(choiceTeam.getSelectedItem())){
-            	destinyTeam2 = LOWERCORNER;
-            }else if("Team3".equals(choiceTeam.getSelectedItem())){
-            	destinyTeam3 = LOWERCORNER;
-            }           
-		
-        }
-    }                                                
+    		if("Team1".equals(choiceTeam.getSelectedItem())) {
+    			destinyTeam1 = LOWERCORNER;
+    		}else if("Team2".equals(choiceTeam.getSelectedItem())){
+    			destinyTeam2 = LOWERCORNER;
+    		}else if("Team3".equals(choiceTeam.getSelectedItem())){
+    			destinyTeam3 = LOWERCORNER;
+    		}
+    	}
+    }
+
 
     private void buttonStartActionPerformed(java.awt.event.ActionEvent evt) {  
         if(Integer.valueOf(marineAvailable.getText())+Integer.valueOf(walloperAvailable.getText())+Integer.valueOf(archerAvailable.getText()) == 0) {
@@ -326,17 +328,16 @@ public class StartGame extends javax.swing.JFrame implements IContants{
         }else {
         	JOptionPane.showMessageDialog(null, "You must assign all warriors", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-    } 
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        
-        
-                new StartGame().setVisible(true);
-         
     }
 
-              
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (arg instanceof Integer && (int)arg == 1) {
+			this.setVisible(true);
+		}
+		if (arg instanceof Integer && (int)arg == 2) {
+			this.setVisible(false);
+		}
+	}
 }
