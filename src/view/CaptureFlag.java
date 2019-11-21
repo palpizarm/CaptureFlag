@@ -46,6 +46,7 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 		JMenuItem item1 = new JMenuItem("Show stats");
 		this.menu.add(item1);
 		this.setJMenuBar(this.menu);
+		
 	}
 	
 	
@@ -82,19 +83,22 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 	@Override
 	public void update(Observable caller, Object update) {
 		if (update instanceof int[][]) {
-			int map[][] = (int[][]) update;
+			int map[][] = (int[][]) update;			
 			Graphics g = (Graphics)super.getGraphics();
+			//g.drawImage(bg_image,X_BG_MAP,Y_BG_MAP,WIDTH_APP,HEIGHT_APP,null);
 			for (int row = 0; row < MAP_ROW; row++) {
 				for (int column = 0; column < MAP_COLUMN; column++) {
 					if (map[row][column] == OBSTACLE) {
 						g.drawImage(obstacle_image, row*RADIO_POINT, column*RADIO_POINT,RADIO_POINT,RADIO_POINT,null);
-					} else {
-						g.drawImage(walloper_image, chooseX(row*RADIO_POINT), chooseY(column*RADIO_POINT),RADIO_WARRIOR,RADIO_WARRIOR,null);
+					} else {						
+						//g.drawImage(walloper_image, chooseX(row*RADIO_POINT), chooseY(column*RADIO_POINT),RADIO_WARRIOR,RADIO_WARRIOR,null);
 					}
 				}
 			}
+			
 		}
 	}
+	
 	
 	public static void main(String[] args) {
 		CaptureFlag application = new CaptureFlag();

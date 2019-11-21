@@ -115,7 +115,7 @@ public class Manager extends Observable implements IContants {
 	 */
 	private void createMap() {
 		try {
-			obstacles = jsonHandler.getObstacles("mapa2.json");
+			obstacles = jsonHandler.getObstacles("mapa1.json");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return;
