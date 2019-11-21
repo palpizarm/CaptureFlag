@@ -45,8 +45,6 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 		this.menu = new JMenuBar();
 		JMenuItem item1 = new JMenuItem("Show stats");
 		this.menu.add(item1);
-		JMenuItem item2 = new JMenuItem("Start Game");
-		this.menu.add(item2);
 		this.setJMenuBar(this.menu);
 	}
 	
@@ -97,10 +95,4 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 			}
 		}
 	}
-	
-	public static void main(String[] args) {
-		CaptureFlag application = new CaptureFlag();
-		application.setVisible(true);
-	}
-
 }
