@@ -2,8 +2,13 @@ package view;
 
 import java.awt.*;
 import java.awt.Image;
+import java.util.ArrayList;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+
+import controller.Manager;
+
 import javax.swing.*;
 
 
@@ -12,13 +17,16 @@ import javax.swing.*;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+import model.*;
 /**
  *
  * @author Alexander
  */
 public class StartGame extends javax.swing.JFrame {
-	
+	private Manager manager = null;
+	private ArrayList<Warrior> Team1 = new ArrayList<Warrior>();
+	private ArrayList<Warrior> Team2 = new ArrayList<Warrior>();
+	private ArrayList<Warrior> Team3 = new ArrayList<Warrior>();
 	 // Variables declaration                    
     private javax.swing.JLabel archerAvailable;
     private javax.swing.JButton buttonAdd;
@@ -191,30 +199,64 @@ public class StartGame extends javax.swing.JFrame {
 
                                           
 
-    private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {                                          
+    private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {  
+    	
     	if("Archer".equals(choiceWarrior.getSelectedItem())){
     		int aux = Integer.valueOf(archerAvailable.getText());
     		if (aux != 0) {           
 	            aux--;
 	            archerAvailable.setText(String.valueOf(aux));
+	            if("Team1".equals(choiceTeam.getSelectedItem())) {
+	            	Team1.add(new Acher());
+	            }else if("Team2".equals(choiceTeam.getSelectedItem())){
+	            	Team2.add(new Acher());
+	            }else if("Team3".equals(choiceTeam.getSelectedItem())){
+	            	Team3.add(new Acher());
+	            }
+            }else {
+            	JOptionPane.showMessageDialog(null, "No archers available", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
-        }else if("Walloper".equals(choiceWarrior.getSelectedItem())){
+    		
+        }    	
+    	else if("Walloper".equals(choiceWarrior.getSelectedItem())){
         	int aux = Integer.valueOf(walloperAvailable.getText());
     		if (aux != 0) {           
-	            aux--;
+    			aux--;
 	            walloperAvailable.setText(String.valueOf(aux));
+	            if("Team1".equals(choiceTeam.getSelectedItem())) {
+	            	Team1.add(new Walloper());
+	            }else if("Team2".equals(choiceTeam.getSelectedItem())){
+	            	Team2.add(new Walloper());
+	            }else if("Team3".equals(choiceTeam.getSelectedItem())){
+	            	Team3.add(new Walloper());
+	            }
+            }else {
+            	JOptionPane.showMessageDialog(null, "No wallopers available", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
     	}else if("Marine".equals(choiceWarrior.getSelectedItem())){
         	int auxi = Integer.valueOf(marineAvailable.getText());
     		if (auxi != 0) {           
-	            auxi--;
-	            marineAvailable.setText(String.valueOf(auxi));           
-    		}
+    			auxi--;
+	            marineAvailable.setText(String.valueOf(auxi));
+	            if("Team1".equals(choiceTeam.getSelectedItem())) {
+	            	Team1.add(new Marine());
+	            }else if("Team2".equals(choiceTeam.getSelectedItem())){
+	            	Team2.add(new Marine());
+	            }else if("Team3".equals(choiceTeam.getSelectedItem())){
+	            	Team3.add(new Marine());
+	            }           
+    		}else {
+            	JOptionPane.showMessageDialog(null, "No Marine available", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
     } 
     
     private void buttonStartActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        
+        if(Integer.valueOf(marineAvailable.getText())+Integer.valueOf(walloperAvailable.getText())+Integer.valueOf(archerAvailable.getText()) == 0) {
+        	manager.teamUpToStart(Team1, Team2, Team3);        	
+        }else {
+        	JOptionPane.showMessageDialog(null, "You must assign all warriors", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     } 
 
     /**

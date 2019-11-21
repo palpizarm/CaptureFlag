@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import commons.IContants;
 import model.Obstacle;
 import model.Player;
+import model.Warrior;
 
 @SuppressWarnings("deprecation")
 public class Manager extends Observable implements IContants {
@@ -142,6 +143,8 @@ public class Manager extends Observable implements IContants {
 		this.setChanged();
 		this.notifyObservers(map);
 	}
+	
+	public void teamUpToStart(ArrayList<Warrior> team1, ArrayList<Warrior>team2, ArrayList<Warrior>team3) {}
 	
 	private void startMap(int pRow, int pColumn) {
 		map = new int[pRow][pColumn];
