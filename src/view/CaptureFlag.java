@@ -90,7 +90,7 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 				for (int column = 0; column < MAP_COLUMN; column++) {
 					if (map[row][column] == OBSTACLE) {
 						g.drawImage(obstacle_image, row*RADIO_POINT, column*RADIO_POINT,RADIO_POINT,RADIO_POINT,null);
-					} else {						
+					} else {
 						//g.drawImage(walloper_image, chooseX(row*RADIO_POINT), chooseY(column*RADIO_POINT),RADIO_WARRIOR,RADIO_WARRIOR,null);
 					}
 				}
@@ -98,11 +98,4 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 			
 		}
 	}
-	
-	
-	public static void main(String[] args) {
-		CaptureFlag application = new CaptureFlag();
-		application.setVisible(true);
-	}
-
 }
