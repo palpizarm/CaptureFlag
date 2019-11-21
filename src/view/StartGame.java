@@ -2,8 +2,14 @@ package view;
 
 import java.awt.*;
 import java.awt.Image;
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+
+import controller.Manager;
+
 import javax.swing.*;
 
 
@@ -17,9 +23,12 @@ import javax.swing.*;
  *
  * @author Alexander
  */
-public class StartGame extends javax.swing.JFrame {
+@SuppressWarnings("deprecation")
+public class StartGame extends javax.swing.JFrame implements Observer{
+	private static final long serialVersionUID = 1L;
+	// Variables declaration 
 	
-	 // Variables declaration                    
+	private Manager manager = Manager.getInstance();
     private javax.swing.JLabel archerAvailable;
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonStart;
@@ -41,11 +50,8 @@ public class StartGame extends javax.swing.JFrame {
      */
     public StartGame() {
         this.setTitle("Config Game");
+        manager.addObserver(this);
         initComponents();
-        
-        
-      
-        
     }
 
                    
@@ -215,17 +221,16 @@ public class StartGame extends javax.swing.JFrame {
     
     private void buttonStartActionPerformed(java.awt.event.ActionEvent evt) {                                          
         
-    } 
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        
-        
-                new StartGame().setVisible(true);
-         
     }
 
-              
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (arg instanceof Integer && (int)arg == 1) {
+			this.setVisible(true);
+		}
+		if (arg instanceof Integer && (int)arg == 2) {
+			this.setVisible(false);
+		}
+	}
 }

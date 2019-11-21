@@ -4,7 +4,7 @@ package test;
 import controller.Manager;
 import view.CaptureFlag;
 import view.Login;
-import view.Setting;
+import view.StartGame;
 
 public class Test {
 	
@@ -15,7 +15,7 @@ public class Test {
 		
 		Login login = new Login();
 		CaptureFlag gameView = new CaptureFlag();
-		Setting settingGame = new Setting();
+		StartGame settingGame = new StartGame();
 		
 		login.setVisible(true);;
 		

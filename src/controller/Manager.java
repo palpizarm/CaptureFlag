@@ -95,26 +95,6 @@ public class Manager extends Observable implements IContants {
 	    return false;
 	}
 	
-	public boolean validateEmail(String pMail){
-		// Patrón para validar el email
-	    Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-	                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-	    // El email a validar
-	    String mail = pMail;
-	
-	    Matcher mather = pattern.matcher(mail);
-	
-	    if (mather.find() == true) {
-	    	//El email ingresado es válido.
-	    	return true;
-	        
-	    } else {
-	    	//El email ingresado es inválido.
-	    	return false;
-	       
-	    }
-	}
-	
 	/**
 	 * To login exist player
 	 * @param pUser
@@ -202,24 +182,25 @@ public class Manager extends Observable implements IContants {
 	 * To create the both graph, left to right and right to left  
 	 */
 	private void addEdgeToGraphs() {
-		ArrayList<ArrayList<Node<Point>>> mapVertex = getVertex();
+		ArrayList<ArrayList<Node<Point>>> vertexLeftToRight = getVertex();
+		ArrayList<ArrayList<Node<Point>>> vertexRightToLeft = getVertex();
 		for (int indexRow = 0; indexRow < MAP_ROW; indexRow++) {
 			for (int indexColumn = 0; indexColumn < MAP_ROW; indexColumn++) {
 				// GrpahLeftToRight
-				graphLeftToRigth.addArc(mapVertex.get(indexRow).get(indexColumn),mapVertex.get(indexRow).get(indexColumn+1), 1);
+				graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow).get(indexColumn+1), 1);
 				if (indexRow != 0 && map[indexRow-1][indexColumn] != OBSTACLE) {	
-					graphLeftToRigth.addArc(mapVertex.get(indexRow).get(indexColumn),mapVertex.get(indexRow-1).get(indexColumn), 1);
+					graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow-1).get(indexColumn), 1);
 				}
 				if (indexRow != MAP_ROW-1 && map[indexRow+1][indexColumn] != OBSTACLE) {
-					graphLeftToRigth.addArc(mapVertex.get(indexRow).get(indexColumn),mapVertex.get(indexRow+1).get(indexColumn), 1);
+					graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow+1).get(indexColumn), 1);
 				}
 				//GraphRigthToLeft
-				graphRigthToLeft.addArc(mapVertex.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),mapVertex.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-2), 1);
+				graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-2), 1);
 				if (indexRow != 0 && map[indexRow-1][indexColumn] != OBSTACLE) {	
-					graphRigthToLeft.addArc(mapVertex.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),mapVertex.get(MAP_ROW-indexRow-2).get(MAP_COLUMN-indexColumn-1), 1);
+					graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW-indexRow-2).get(MAP_COLUMN-indexColumn-1), 1);
 				}
 				if (indexRow != MAP_ROW-1 && map[indexRow+1][indexColumn] != OBSTACLE) {
-					graphRigthToLeft.addArc(mapVertex.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),mapVertex.get(MAP_ROW - indexRow).get(MAP_COLUMN-indexColumn-1), 1);
+					graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW - indexRow).get(MAP_COLUMN-indexColumn-1), 1);
 				}
 			}
 		}
