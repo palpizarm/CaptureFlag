@@ -41,19 +41,6 @@ public class CaptureFlag extends JFrame implements IContants, Observer{
 		initComponents();
 	}
 	
-	public CaptureFlag(Team pTeam1,Team pTeam2, Team pTeam3, int destTeam1, int destTeam2, int destTeam3) {
-		super("Capture Flag(Application)");
-		manager = Manager.getInstance();
-		manager.addObserver(this);
-		loadImage();
-		
-		this.setSize(WIDTH_APP, HEIGHT_APP);
-		this.setLocation(X_APP, Y_APP);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
-		initComponents();
-	}
-	
 	private void initComponents() {
 		this.menu = new JMenuBar();
 		JMenuItem item1 = new JMenuItem("Show stats");

@@ -6,12 +6,15 @@ import javax.swing.*;
 import controller.Manager;
 
 import java.awt.event.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Login extends javax.swing.JFrame {
+@SuppressWarnings("deprecation")
+public class Login extends javax.swing.JFrame implements Observer{
 
 	private static final long serialVersionUID = 1L;
+	
+	private Manager manager = null;
 	// Variables declaration - do not modify 
     private JPanel panel;   
     private JTextField email;
@@ -28,6 +31,8 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     public Login() {
+    	manager = Manager.getInstance();
+    	manager.addObserver(this);
         initComponents();
     }
                                  
@@ -144,19 +149,32 @@ public class Login extends javax.swing.JFrame {
 
     
         private void loginButtonActionPerformed(ActionEvent evt) {       
-    	Manager manag = null;
-    	boolean valid = manag.validateEmail(email.getText());
-    	
-        // Pasword    	
-    	String pasw = pasword.getText(); 
-    	
+        	String user = email.getText();
+        	String passw = pasword.getText(); 
+        	boolean valid = manager.validateEmail(email.getText());    	
+        	try {
+        	manager.loginPlayer(user, passw);
+        	} catch (Exception e) {
+    			JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+    		}
     }                                           
 
-    private void registerButtonActionPerformed(ActionEvent evt) {                                               
-    	Manager manag = null;
-    	boolean valid = manag.validateEmail(email.getText());
-        // Pasword    	
-    	String pasw = pasword.getText(); 
-    }                                                
+    private void registerButtonActionPerformed(ActionEvent evt) {
+    	String user = email.getText();
+    	String passw = pasword.getText(); 
+    	boolean valid = manager.validateEmail(email.getText());    	
+    	try {
+    	manager.registerPlayer(user, passw);
+    	} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
+    }
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (arg instanceof Integer && (int)arg == 1) {
+			this.setVisible(false);
+		}
+	}                                                
 
 }
