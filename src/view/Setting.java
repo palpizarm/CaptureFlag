@@ -118,7 +118,7 @@ public class Setting extends JFrame implements IContants, Observer{
 		this.add(walloper_team3);
 	}
 	
-	private initListeners() {
+	private void initListeners() {
 		btReady.addActionListener(new ActionListener() {
 			
 			@Override
