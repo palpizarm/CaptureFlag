@@ -6,8 +6,6 @@ import javax.swing.*;
 import controller.Manager;
 
 import java.awt.event.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Login extends javax.swing.JFrame {
 	/**
@@ -160,6 +158,9 @@ public class Login extends javax.swing.JFrame {
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR" ,JOptionPane.ERROR_MESSAGE);
 			}
+    		if (manager.getUserLogin()) {
+    			this.setVisible(false);
+    		}
     	} 	
     	
     	
@@ -177,6 +178,9 @@ public class Login extends javax.swing.JFrame {
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR" ,JOptionPane.ERROR_MESSAGE);
 			}
+    		if (manager.getUserLogin()) {
+    			this.setVisible(false);
+    		}
     	}
     	
     }                                                

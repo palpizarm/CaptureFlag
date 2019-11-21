@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -22,8 +21,7 @@ public class Manager extends Observable implements IContants {
 	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	private Graph<Point> graphLeftToRigth = null;
 	private Graph<Point> graphRigthToLeft = null;
-	
-	
+	private boolean userLogin = false;
 	
 	private int [][] map = null;
 	
@@ -37,7 +35,6 @@ public class Manager extends Observable implements IContants {
 			e.printStackTrace();
 		}
 		createMap();
-		binFileHandler.sort();
 	}
 	
 	public static Manager getInstance() {
@@ -48,6 +45,12 @@ public class Manager extends Observable implements IContants {
 	public void addObserver(Observer object) {
 		super.addObserver(object);
 	}
+
+	
+	public boolean getUserLogin() {
+		return userLogin;
+	}
+	
 	
 	/**
 	 * Register the new user
@@ -70,6 +73,10 @@ public class Manager extends Observable implements IContants {
 		} else {
 			throw new Exception("User unvaliad(try again)");
 		}
+		this.setChanged();
+		this.notifyObservers(1); // 1 is to know if a user is login
+		userLogin = true;
+		binFileHandler.sort();
 	}
 	
 	/**
@@ -78,23 +85,14 @@ public class Manager extends Observable implements IContants {
 	 * @return boolean
 	 */
 	public boolean validateEmail(String pMail){
-		// Patrón para validar el email
+		// To validate email
 	    Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 	                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-	    // El email a validar
 	    String mail = pMail;
-	
 	    Matcher mather = pattern.matcher(mail);
-	
-	    if (mather.find() == true) {
-	    	//El email ingresado es válido.
+	    if (mather.find() == true)
 	    	return true;
-	        
-	    } else {
-	    	//El email ingresado es inválido.
-	    	return false;
-	       
-	    }
+	    return false;
 	}
 	
 	/**
@@ -107,14 +105,18 @@ public class Manager extends Observable implements IContants {
 		if (pUser.length() > 60) {
 			throw new Exception("User length is greater than 60 characters");
 		}
-		if (pPassword.length() == 8) {
+		if (pPassword.length() != 8) {
 			throw new Exception("Password can't be greater than 8 characters");
 		}
 		Player player = null;
+
 		char []user = pUser.toCharArray();
 		char []password = pPassword.toCharArray();
 		if ((player = binFileHandler.search(user)) != null) {
-			
+			userLogin = true;
+			this.setChanged();
+			this.notifyObservers(1);
+
 		}
 		throw new Exception("Don't find the user");
 	}
@@ -163,51 +165,48 @@ public class Manager extends Observable implements IContants {
 		}
 	}
 	
-	private ArrayList<Node<Point>> getVertex() {
-		ArrayList<Node<Point>> vertex = new ArrayList<Node<Point>>();
+	private ArrayList<ArrayList<Node<Point>>> getVertex() {
+		ArrayList<ArrayList<Node<Point>>> vertex = new ArrayList<ArrayList<Node<Point>>>();
 		for (int row = 0; row < MAP_ROW; row++) {
 			for (int column = 0; column < MAP_COLUMN; column++) {
 				Point point = new Point(row*RADIO_POINT, column*RADIO_POINT,RADIO_POINT); 
 				Node<Point> current = graphLeftToRigth.addNode(point);
 				graphRigthToLeft.addNode(point);
-				vertex.add(current);
+				vertex.get(row).add(current);
 				}
 			}
 		return vertex;
 	}
 	
+	/**
+	 * To create the both graph, left to right and right to left  
+	 */
 	private void addEdgeToGraphs() {
-		ArrayList<Node<Point>> vertex = getVertex();
+		ArrayList<ArrayList<Node<Point>>> mapVertex = getVertex();
 		for (int indexRow = 0; indexRow < MAP_ROW; indexRow++) {
 			for (int indexColumn = 0; indexColumn < MAP_ROW; indexColumn++) {
 				// GrpahLeftToRight
-				if (indexRow != MAP_ROW-1) {
-					graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_COLUMN*(indexRow+1)+indexColumn), 1);
+				graphLeftToRigth.addArc(mapVertex.get(indexRow).get(indexColumn),mapVertex.get(indexRow).get(indexColumn+1), 1);
+				if (indexRow != 0 && map[indexRow-1][indexColumn] != OBSTACLE) {	
+					graphLeftToRigth.addArc(mapVertex.get(indexRow).get(indexColumn),mapVertex.get(indexRow-1).get(indexColumn), 1);
 				}
-				graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_ROW*indexRow+indexColumn+1), 1);
-				if (indexRow != 0) {	
-					graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_ROW*(indexRow-1)+indexColumn), 1);
+				if (indexRow != MAP_ROW-1 && map[indexRow+1][indexColumn] != OBSTACLE) {
+					graphLeftToRigth.addArc(mapVertex.get(indexRow).get(indexColumn),mapVertex.get(indexRow+1).get(indexColumn), 1);
 				}
 				//GraphRigthToLeft
-				if (indexRow != MAP_ROW-1) {
-					graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_ROW*(indexRow+1)+indexColumn), 1);
+				graphRigthToLeft.addArc(mapVertex.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),mapVertex.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-2), 1);
+				if (indexRow != 0 && map[indexRow-1][indexColumn] != OBSTACLE) {	
+					graphRigthToLeft.addArc(mapVertex.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),mapVertex.get(MAP_ROW-indexRow-2).get(MAP_COLUMN-indexColumn-1), 1);
 				}
-				graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_ROW*indexRow+indexColumn+1), 1);
-				if (indexRow != 0) {	
-					graphLeftToRigth.addArc(vertex.get(MAP_ROW*indexRow+indexColumn), vertex.get(MAP_ROW*(indexRow-1)+indexColumn), 1);
+				if (indexRow != MAP_ROW-1 && map[indexRow+1][indexColumn] != OBSTACLE) {
+					graphRigthToLeft.addArc(mapVertex.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),mapVertex.get(MAP_ROW - indexRow).get(MAP_COLUMN-indexColumn-1), 1);
 				}
 			}
 		}
 	}
 	
-	public static void main(String[] args) {
-		Manager manager = Manager.getInstance();
-		try {
-			manager.registerPlayer("pabloalpizar99@gmail.com", "12345678");
-			manager.registerPlayer("pmonge1999@hotmail.com", "87654321");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+	public void getGameAdjusments() {
+		
 	}
 }

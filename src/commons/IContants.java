@@ -13,6 +13,11 @@ public interface IContants {
 	public int X_BG_MAP = 0;
 	public int Y_BG_MAP = 0;
 	
+	public int WIDTH_SETTING = 720;
+	public int HEIGHT_SETTING = 720;
+	public int X_SETTING = (int)(screenSize.getWidth()*0.5 - (WIDTH_SETTING*0.5));
+	public int Y_SETTING = 0;
+	
 	public int AUX_FILES = 4;
 	
 	public int ENERGEY = 100;
@@ -37,6 +42,27 @@ public interface IContants {
 	public int MAP_ROW = (int)Math.floor(WIDTH_APP/(RADIO_POINT));
 	public int MAP_COLUMN = (int)Math.floor(HEIGHT_APP/(RADIO_POINT));
 	
+	
+	public int ARCHER_SETTING_X = (int)(WIDTH_SETTING*0.3);
+	public int WARRIOR_SETTING_Y = 100;
+	public int MARINE_SETTING_X = (int)(WIDTH_SETTING*0.5);
+	public int WALLOPER_SETTING_X = (int)(WIDTH_SETTING*0.7);
+
+	
+	public int BTREADY_SETTING_X = (int)(WIDTH_SETTING*0.7);
+	public int BTREADY_SETTING_Y = (int)(HEIGHT_SETTING*0.8);
+	public int BT_WIDTH = 100;
+	public int BT_HEIGHT = 50;
+	
+	public int TEXTFIELD_WIDTH = 100;
+	public int TEXTFIELD_HEIGHT = 50;
+	
 	public int USER_SIZE = 60;
 	public int PASSW_SIZE = 8;
+	
+	public int TEAM1 = 1;
+	public int TEAM2 = 2;
+	public int TEAM3 = 3;
+	
+	public String OPTIONS_TEAM[] = {"TEAM 1", "TEAM 2", "TEAM 3"};
 }

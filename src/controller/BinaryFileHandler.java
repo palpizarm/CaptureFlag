@@ -56,7 +56,6 @@ public class BinaryFileHandler implements IContants {
 		try {
 			// the first split of the object in the inputFile
 			countObject = shareOut();
-			// VALIDAR CUANDO HAY UN SOLO ELEMENTO (SOBRESCRIBIR EL NOMBRE DEL ARCHIVO)
 			if (countObject < 2) {
 				return;
 			}
@@ -72,21 +71,30 @@ public class BinaryFileHandler implements IContants {
 					}
 				}
 				outputIndex = M2;
-				while (readble) { 
-					int splitRange = 0;
+				int splitRange = 0;
+				while (readble) {
+					player1 = (Player)(((ObjectInputStream)DataStream[index[0]]).readObject());
+					player2 = (Player)(((ObjectInputStream)DataStream[index[1]]).readObject());
 					while (splitRange < range ) {
 						try {
-							if (player1 == null && player2 == null) {
-								player1 = (Player)(((ObjectInputStream)DataStream[index[0]]).readObject());
-								player2 = (Player)(((ObjectInputStream)DataStream[index[1]]).readObject());
+							if (player1.compareTo(player2) > 0) {
+								((ObjectOutputStream)DataStream[index[outputIndex]]).writeObject(player1);
+								((ObjectOutputStream)DataStream[index[outputIndex]]).writeObject(player2);
+							} else {
+								((ObjectOutputStream)DataStream[index[outputIndex]]).writeObject(player2);
+								((ObjectOutputStream)DataStream[index[outputIndex]]).writeObject(player1);
 							}
-
-							outputIndex=(outputIndex+1)%M2;
+							if(outputIndex == M) {
+								outputIndex = M2;
+							} else {
+								outputIndex++;
+							}
 						} catch (Exception e) {
 							readble = false;
 						}
 					}
 				}
+				player1 = null; player2 = null;
 			} while (range < countObject);
 			// Change the order of file
 			for (int i = 0; i < M2; i++)
@@ -119,6 +127,7 @@ public class BinaryFileHandler implements IContants {
 		int objectCount = 0;
 		FileInputStream fileIn = new FileInputStream(file);
 		ObjectInputStream originInput =	new ObjectInputStream(fileIn);
+		System.out.println(file.length());
 		for (outputIndex = 0; outputIndex < M2; outputIndex++) {
 			FileOutputStream fileOutput = new FileOutputStream(auxiliarFiles[outputIndex]);
 			DataStream[outputIndex] = (ObjectOutput)new ObjectOutputStream(fileOutput);
@@ -160,7 +169,6 @@ public class BinaryFileHandler implements IContants {
 			out.writeObject(pPlayer);
 			out.flush();
 			out.close();
-			System.out.println(file.length());
 			fileOutput.close();
 			multipleBalancedMix();
 		} catch (Exception e) {
