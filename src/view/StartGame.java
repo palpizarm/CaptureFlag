@@ -321,10 +321,12 @@ public class StartGame extends javax.swing.JFrame implements IContants, Observer
 
 
     private void buttonStartActionPerformed(java.awt.event.ActionEvent evt) {  
-        if(Integer.valueOf(marineAvailable.getText())+Integer.valueOf(walloperAvailable.getText())+Integer.valueOf(archerAvailable.getText()) == 0) {
-        	new CaptureFlag(new Team(Team1), new Team(Team2),new Team(Team3), destinyTeam1, destinyTeam2, destinyTeam3).setVisible(true);
-        	this.dispose();    
-        	
+        if(Integer.valueOf(marineAvailable.getText())+Integer.valueOf(walloperAvailable.getText())+Integer.valueOf(archerAvailable.getText()) == 0) {        	
+        	ArrayList<Integer> auxDest = new ArrayList<>();
+        	auxDest.add(destinyTeam1);
+        	auxDest.add(destinyTeam2);
+        	auxDest.add(destinyTeam3);
+        	manager.getGameAdjusments(new Team(Team1), new Team(Team2),new Team(Team3), auxDest);
         }else {
         	JOptionPane.showMessageDialog(null, "You must assign all warriors", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
