@@ -147,16 +147,16 @@ public class Login extends javax.swing.JFrame implements Observer{
         pack();
     }                      
 
-    
-        private void loginButtonActionPerformed(ActionEvent evt) {       
-        	String user = email.getText();
-        	String passw = pasword.getText(); 
-        	boolean valid = manager.validateEmail(email.getText());    	
-        	try {
-        	manager.loginPlayer(user, passw);
-        	} catch (Exception e) {
-    			JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-    		}
+
+    private void loginButtonActionPerformed(ActionEvent evt) {       
+    	String user = email.getText();
+    	String passw = pasword.getText(); 
+    	boolean valid = manager.validateEmail(email.getText());    	
+    	try {
+    		manager.loginPlayer(user, passw);
+    	} catch (Exception e) {
+    		JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+    	}
     }                                           
 
     private void registerButtonActionPerformed(ActionEvent evt) {
@@ -175,6 +175,6 @@ public class Login extends javax.swing.JFrame implements Observer{
 		if (arg instanceof Integer && (int)arg == 1) {
 			this.setVisible(false);
 		}
-	}                                                
+	}
 
 }
