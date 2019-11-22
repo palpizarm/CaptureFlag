@@ -20,10 +20,7 @@ public class Floyd <T> extends algorithmPath<T>{
 	}
 	
 	private void calcFloyd() {
-		// Minimum path of a vertex to itself: 0
-		//for (int index = 0; index < numVertices; index++)
-		//	weight.get(index).set(index , 0 );
-		//Perform due calculations and reorganize lists
+	
 		for (int i = 0; i < numVertices; i++)
 			weight.get(i).set(i, 0);
 		for (int k = 0; k < numVertices; k++) {
