@@ -327,8 +327,6 @@ public class StartGame extends javax.swing.JFrame implements IContants, Observer
         	auxDest.add(destinyTeam2);
         	auxDest.add(destinyTeam3);
         	manager.getGameAdjusments(new Team(Team1), new Team(Team2),new Team(Team3), auxDest);
-        	this.dispose();    
-        	
         }else {
         	JOptionPane.showMessageDialog(null, "You must assign all warriors", "ERROR", JOptionPane.ERROR_MESSAGE);
         }

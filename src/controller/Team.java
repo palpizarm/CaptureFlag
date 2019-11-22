@@ -9,7 +9,7 @@ import model.Warrior;
 public class Team {
 	private ArrayList<Warrior> warriors = new ArrayList<Warrior>();
 	private ArrayList<Node<Point>> path = new ArrayList<Node<Point>>();
-	
+	private Node<Point> current = null;
 	
 	public Team(ArrayList<Warrior> pWarrios, ArrayList<Node<Point>> pPath ) {
 		warriors = pWarrios;
@@ -28,9 +28,17 @@ public class Team {
 		return warriors;
 	}
 	
-	public Node<Point> move() {
+	public void move() {
 		Node<Point> nextNode = path.get(0);
 		path.remove(0);
-		return nextNode;
+		current = nextNode;
+	}
+	
+	public int getX() {
+		return current.getValue().getX();
+	}
+	
+	public int getY() {
+		return current.getValue().getY();
 	}
 }

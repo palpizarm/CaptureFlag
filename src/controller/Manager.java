@@ -6,8 +6,6 @@ import java.util.Observer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.print.attribute.SetOfIntegerSyntax;
-
 import commons.IContants;
 import model.Dijkstra;
 import model.Floyd;
@@ -182,6 +180,7 @@ public class Manager extends Observable implements IContants {
 	private ArrayList<ArrayList<Node<Point>>> getVertex() {
 		ArrayList<ArrayList<Node<Point>>> vertex = new ArrayList<ArrayList<Node<Point>>>();
 		for (int row = 0; row < MAP_ROW; row++) {
+			vertex.add(new ArrayList<Node<Point>>());
 			for (int column = 0; column < MAP_COLUMN; column++) {
 				Point point = new Point(row*RADIO_POINT, column*RADIO_POINT,RADIO_POINT); 
 				Node<Point> current = graphLeftToRigth.addNode(point);
@@ -199,9 +198,10 @@ public class Manager extends Observable implements IContants {
 		vertexLeftToRight = getVertex();
 		vertexRightToLeft = getVertex();
 		for (int indexRow = 0; indexRow < MAP_ROW; indexRow++) {
-			for (int indexColumn = 0; indexColumn < MAP_ROW; indexColumn++) {
+			for (int indexColumn = 0; indexColumn < MAP_COLUMN; indexColumn++) {
 				// GrpahLeftToRight
-				graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow).get(indexColumn+1), 1);
+				if (indexColumn != MAP_COLUMN -1)
+					graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow).get(indexColumn+1), 1);
 				if (indexRow != 0 && map[indexRow-1][indexColumn] != OBSTACLE) {	
 					graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow-1).get(indexColumn), 1);
 				}
@@ -209,12 +209,13 @@ public class Manager extends Observable implements IContants {
 					graphLeftToRigth.addArc(vertexLeftToRight.get(indexRow).get(indexColumn),vertexLeftToRight.get(indexRow+1).get(indexColumn), 1);
 				}
 				//GraphRigthToLeft
-				graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-2), 1);
+				if (indexColumn != MAP_COLUMN-1)
+					graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-2), 1);
 				if (indexRow != 0 && map[indexRow-1][indexColumn] != OBSTACLE) {	
-					graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW-indexRow-2).get(MAP_COLUMN-indexColumn-1), 1);
+					graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW-indexRow-1).get(MAP_COLUMN-indexColumn-1), 1);
 				}
 				if (indexRow != MAP_ROW-1 && map[indexRow+1][indexColumn] != OBSTACLE) {
-					graphRigthToLeft.addArc(vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1),vertexRightToLeft.get(MAP_ROW - indexRow).get(MAP_COLUMN-indexColumn-1), 1);
+					graphRigthToLeft.addArc(vertexRightToLeft.get((MAP_ROW-1) - indexRow).get((MAP_COLUMN-1)-indexColumn),vertexRightToLeft.get(MAP_ROW - indexRow-1).get(MAP_COLUMN-indexColumn-1), 1);
 				}
 			}
 		}
@@ -222,9 +223,9 @@ public class Manager extends Observable implements IContants {
 
 
 	public void getGameAdjusments(Team pTeam1,Team pTeam2, Team pTeam3, ArrayList<Integer> destinys) {
-		
+		addEdgeToGraphs();
 		Node<Point> origin = vertexLeftToRight.get(MAP_ROW/2).get(0);  
-		ArrayList<Node<Point>> dest = null;
+		ArrayList<Node<Point>> dest = new ArrayList<Node<Point>>();
 		for(int destTeam = 0 ; destTeam < destinys.size(); destTeam++) {
 			if(destinys.get(destTeam) == UPPERCORNER) {
 				dest.add(vertexLeftToRight.get(0).get(MAP_COLUMN-1));
@@ -246,10 +247,12 @@ public class Manager extends Observable implements IContants {
 			pTeam3.setPath(MST.getPathTo(dest.get(2)));
 		} catch (Exception e) {						// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
 		teams.add(pTeam1);
 		teams.add(pTeam2);
 		teams.add(pTeam3);
+		this.setChanged();
+		this.notifyObservers(2);
 		this.setChanged();
 		this.notifyObservers(teams);
 	}
